@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from .serializers import ProcesoSerializer, CargoSerializer
-from .models import Proceso, Cargo
+from .serializers import ProcesoSerializer, CargoSerializer, PartidoPoliticoSerializer
+from .models import Proceso, Cargo, PartidoPolitico
 
 
 class ProcesoViewSet(viewsets.ModelViewSet):
@@ -12,3 +12,8 @@ class ProcesoViewSet(viewsets.ModelViewSet):
 class CargoViewSet(viewsets.ModelViewSet):
     queryset = Cargo.objects.all().order_by('cargo')
     serializer_class = CargoSerializer
+
+
+class PartidosPoliticosViewSet(viewsets.ModelViewSet):
+    queryset = PartidoPolitico.objects.all().order_by('nombre')
+    serializer_class = PartidoPoliticoSerializer
