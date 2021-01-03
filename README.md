@@ -32,4 +32,11 @@ Desplegamos AWS:
 
 Previamente debes tener aws cli profile configurado (Access, Secret keys)
 
+Otra manera es configurar las credenciales por serverless
+
+    serverless config credentials -o --provider aws --key [KEY VALUE] --secret [SECRET VALUE]
+
+
+Para desplegar por defecto es:
+
     sls deploy
