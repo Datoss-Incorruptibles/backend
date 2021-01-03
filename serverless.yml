@@ -22,6 +22,6 @@ functions:
       - http: 'ANY /{proxy+}'
 custom:
   wsgi:
-    app: serverless.wsgi.application
+    app: backend.wsgi.application
     packRequirements: false
   variables: ${file(./env.yml)}
