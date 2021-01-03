@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Proceso, Cargo, PartidoPolitico
+from .models import Proceso, Cargo
 
 class ProcesoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -12,9 +12,4 @@ class CargoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Cargo
         fields = ('cargo', 'estado')
-
-class PartidoPoliticoSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = PartidoPolitico
-        fields = ('nombre', 'fundacion_anio','ruta_archivo')
 
