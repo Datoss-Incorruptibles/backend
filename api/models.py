@@ -27,3 +27,15 @@ class Cargo(models.Model):
 
 
 
+class PartidoPolitico(models.Model):
+    nombre = models.CharField(max_length=150)
+    fundacion_anio = models.IntegerField()
+    ruta_archivo = models.CharField(max_length=500)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+
+    class Meta:
+        db_table = "organizacion_politica"
+    def __str__(self):
+        return self.organizacion_politica
+
