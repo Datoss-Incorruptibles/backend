@@ -25,8 +25,6 @@ class Cargo(models.Model):
     def __str__(self):
         return self.cargo
 
-
-
 class OrganizacionPolitica(models.Model):
     nombre = models.CharField(max_length=150)
     fundacion_anio = models.IntegerField()
@@ -40,7 +38,7 @@ class OrganizacionPolitica(models.Model):
     class Meta:
         db_table = "organizacion_politica"
     def __str__(self):
-        return self.organizacion_politica
+        return self.nombre
 
 class Indicador(models.Model):
     nombre = models.CharField(max_length=150)
@@ -49,29 +47,28 @@ class Indicador(models.Model):
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
-        db_table = "_indicador"
+        db_table = "indicador"
     def __str__(self):
-        return self._indicador
+        return self.nombre
 
 
 class IndicadorCategoria(models.Model):
-    indicador_id = models.IntegerField()
+    indicador_id = models.ForeignKey("Indicador", on_delete=models.CASCADE)
     nombre = models.CharField(max_length=150)
     alerta = models.IntegerField()
     estado =  models.IntegerField()
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
-        db_table = "_indicador_categoria"
+        db_table = "indicador_categoria"
     def __str__(self):
-        return self._indicador_categoria
-
+        return self.nombre
 
 
 class IndicadorCategoriaOrganizacion(models.Model):
-    indicador_id = models.IntegerField()
-    indicador_categoria_id = models.IntegerField()
-    organizacion_id  = models.IntegerField()
+    indicador_id = models.ForeignKey("Indicador", on_delete=models.CASCADE)
+    indicador_categoria_id = models.ForeignKey("IndicadorCategoria", on_delete=models.CASCADE)
+    organizacion_id  = models.ForeignKey("OrganizacionPolitica", on_delete=models.CASCADE)
     cantidad =  models.IntegerField()
     porcentaje  = models.FloatField()
     alerta =  models.IntegerField()
@@ -79,6 +76,4 @@ class IndicadorCategoriaOrganizacion(models.Model):
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
-        db_table = "_indicador_categoria_organizacion"
-    def __str__(self):
-        return self._indicador_categoria_organizacion
+        db_table = "indicador_categoria_organizacion"
