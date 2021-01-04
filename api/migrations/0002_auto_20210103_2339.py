@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('fecha_modificacion', models.DateTimeField(null=True)),
             ],
             options={
-                'db_table': '_indicador',
+                'db_table': 'indicador',
             },
         ),
         migrations.CreateModel(
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ('fecha_modificacion', models.DateTimeField(null=True)),
             ],
             options={
-                'db_table': '_indicador_categoria',
+                'db_table': 'indicador_categoria',
             },
         ),
         migrations.CreateModel(
@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
                 ('fecha_modificacion', models.DateTimeField(null=True)),
             ],
             options={
-                'db_table': '_indicador_categoria_organizacion',
+                'db_table': 'indicador_categoria_organizacion',
             },
         ),
         migrations.CreateModel(
@@ -74,8 +74,5 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'organizacion_politica',
             },
-        ),
-        migrations.DeleteModel(
-            name='PartidoPolitico',
-        ),
+        )
     ]

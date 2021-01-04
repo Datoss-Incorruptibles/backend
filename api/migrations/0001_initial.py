@@ -38,19 +38,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'proceso',
             },
-        ),
-        migrations.CreateModel(
-            name='PartidoPolitico',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nombre', models.CharField(max_length=150)),
-                ('fundacion_anio', models.IntegerField()),
-                ('ruta_archivo', models.CharField(max_length=500)),
-                ('fecha_registro', models.DateTimeField(blank=True, default=datetime.datetime.now)),
-                ('fecha_modificacion', models.DateTimeField(null=True)),
-            ],
-            options={
-                'db_table': 'organizacion_politica',
-            },
         )
+
     ]
