@@ -53,10 +53,11 @@ class Indicador(models.Model):
 
 
 class IndicadorCategoria(models.Model):
-    indicador_id = models.ForeignKey("Indicador", on_delete=models.CASCADE)
+    indicador = models.ForeignKey("Indicador", on_delete=models.CASCADE)
     nombre = models.CharField(max_length=150)
     alerta = models.IntegerField()
     estado =  models.IntegerField()
+    order  = models.IntegerField()
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
@@ -66,9 +67,10 @@ class IndicadorCategoria(models.Model):
 
 
 class IndicadorCategoriaOrganizacion(models.Model):
-    indicador_id = models.ForeignKey("Indicador", on_delete=models.CASCADE)
-    indicador_categoria_id = models.ForeignKey("IndicadorCategoria", on_delete=models.CASCADE)
-    organizacion_id  = models.ForeignKey("OrganizacionPolitica", on_delete=models.CASCADE)
+    indicador = models.ForeignKey("Indicador", on_delete=models.CASCADE)
+    indicador_categoria = models.ForeignKey("IndicadorCategoria", on_delete=models.CASCADE)
+    organizacion  = models.ForeignKey("OrganizacionPolitica", on_delete=models.CASCADE)
+
     cantidad =  models.IntegerField()
     porcentaje  = models.FloatField()
     alerta =  models.IntegerField()
