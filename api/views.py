@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
 from .serializers import ProcesoSerializer, CargoSerializer , OrganizacionPoliticaSerializer, UbigeoSerializer
-from .models import Proceso, Cargo , OrganizacionPolitica, ubigeo
+from .models import Proceso, Cargo , OrganizacionPolitica, Ubigeo
 
 
 class ProcesoViewSet(viewsets.ModelViewSet):
