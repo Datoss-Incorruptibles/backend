@@ -3,8 +3,9 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r'proceso', views.ProcesoViewSet)
-router.register(r'cargo', views.CargoViewSet)
+router.register(r'procesos', views.ProcesoViewSet)
+router.register(r'cargos', views.CargoViewSet)
+router.register(r'organizacionpolitica', views.OrganizacionPoliticaViewSet)
 router.register(r'ubigeo', views.UbigeoViewSet)
 
 # Wire up our API using automatic URL routing.

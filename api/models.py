@@ -69,7 +69,7 @@ class IndicadorCategoria(models.Model):
 class IndicadorCategoriaOrganizacion(models.Model):
     indicador = models.ForeignKey("Indicador", on_delete=models.CASCADE)
     indicador_categoria = models.ForeignKey("IndicadorCategoria", on_delete=models.CASCADE)
-    organizacion  = models.ForeignKey("OrganizacionPolitica", on_delete=models.CASCADE)
+    organizacion  = models.ForeignKey("OrganizacionPolitica", related_name='indicadorescategoriaorg', on_delete=models.CASCADE)
 
     cantidad =  models.IntegerField()
     porcentaje  = models.FloatField()
