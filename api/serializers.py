@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from .models import Proceso, Cargo, OrganizacionPolitica, IndicadorCategoriaOrganizacion ,IndicadorCategoria, Indicador
+from .models import Proceso, Cargo, OrganizacionPolitica, \
+IndicadorCategoriaOrganizacion ,IndicadorCategoria, Indicador, \
+Ubigeo
 
 class ProcesoSerializer(serializers.ModelSerializer):
     class Meta:
