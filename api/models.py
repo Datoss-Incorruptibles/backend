@@ -79,3 +79,13 @@ class IndicadorCategoriaOrganizacion(models.Model):
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
         db_table = "indicador_categoria_organizacion"
+
+
+class Ubigeo(models.Model):
+    ubigeo = models.CharField(max_length=10, primary_key=True)
+    region = models.CharField(max_length=150)
+    distrito_electoral = models.CharField(max_length=150)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+    class Meta:
+        db_table = "ubigeo"
