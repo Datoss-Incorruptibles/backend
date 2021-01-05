@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from .serializers import ProcesoSerializer, CargoSerializer
-from .models import Proceso, Cargo
+from .serializers import ProcesoSerializer, CargoSerializer, UbigeoSerializer
+from .models import Proceso, Cargo, Ubigeo
 
 
 class ProcesoViewSet(viewsets.ModelViewSet):
@@ -14,5 +14,6 @@ class CargoViewSet(viewsets.ModelViewSet):
     serializer_class = CargoSerializer
 
 
-
-    
+class UbigeoViewSet(viewsets.ModelViewSet):
+    queryset = Ubigeo.objects.all()
+    serializer_class = UbigeoSerializer
