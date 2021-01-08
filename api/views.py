@@ -1,7 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets,views, generics, mixins
+from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import ProcesoSerializer, CargoSerializer , OrganizacionPoliticaSerializer
-from .models import Proceso, Cargo , OrganizacionPolitica
+from .serializers import ProcesoSerializer, CargoSerializer , OrganizacionPoliticaSerializer , CandidatoSerializer
+from .models import Proceso, Cargo , OrganizacionPolitica , Candidato
 
 
 class ProcesoViewSet(viewsets.ModelViewSet):
@@ -19,3 +20,29 @@ class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
     serializer_class = OrganizacionPoliticaSerializer
 
     
+class OrganizacionPoliticaDetailViewSet(viewsets.ModelViewSet):
+    queryset = OrganizacionPolitica.objects.all().order_by('id')
+    serializer_class = OrganizacionPoliticaSerializer
+
+
+class CandidatoViewSet(viewsets.ModelViewSet):
+
+    queryset = Candidato.objects.all()
+    serializer_class = CandidatoSerializer
+
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['organizacion_politica_id']
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Candidato.objects.all().order_by('id')
+        # queryset = Purchase.objects.all()
+        # cargo = self.request.query_params.get('cargo', None)
+        org_politica_id = self.request.query_params.get('org_politica_id', None)
+
+        if org_politica_id is not None:
+            queryset = queryset.filter(organizacion_politica_id=org_politica_id)
+        return queryset
