@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from .models import Proceso, Cargo, OrganizacionPolitica, \
 IndicadorCategoriaOrganizacion, IndicadorCategoria, Indicador, \
-IndicadorCategoriaCandidato, Ubigeo
+IndicadorCategoriaCandidato, Ubigeo, Candidato
 
 class ProcesoSerializer(serializers.ModelSerializer):
     class Meta:
