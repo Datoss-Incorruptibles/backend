@@ -35,18 +35,4 @@ class CandidatoViewSet(viewsets.ModelViewSet):
     serializer_class = CandidatoSerializer
 
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['organizacion_politica_id']
-
-    def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `username` query parameter in the URL.
-        """
-        queryset = Candidato.objects.all().order_by('id')
-        # queryset = Purchase.objects.all()
-        # cargo = self.request.query_params.get('cargo', None)
-        org_politica_id = self.request.query_params.get('org_politica_id', None)
-
-        if org_politica_id is not None:
-            queryset = queryset.filter(organizacion_politica_id=org_politica_id)
-        return queryset
+    filterset_fields = ['organizacion_politica_id','cargo_id','region']
