@@ -27,12 +27,13 @@ class Cargo(models.Model):
 
 class OrganizacionPolitica(models.Model):
     nombre = models.CharField(max_length=150)
-    fundacion_anio = models.IntegerField()
+    fundacion_fecha = models.DateField(null=True)
     estado =  models.IntegerField()
-    descripcion = models.CharField(max_length=500)
+    descripcion = models.TextField()
     ruta_archivo = models.CharField(max_length=500)
     jne_idorganizacionpolitica = models.IntegerField()
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    url = models.CharField(max_length=150)
     fecha_modificacion = models.DateTimeField(null=True)
 
     class Meta:

@@ -47,5 +47,5 @@ class OrganizacionPoliticaSerializer(serializers.ModelSerializer):
     indicadorescategoriaorg = IndicadorCategoriaOrganizacionSerializer(many=True, read_only=True)
     class Meta:
         model = OrganizacionPolitica
-        fields = ('id','nombre','fundacion_anio', 'estado','descripcion','ruta_archivo','jne_idorganizacionpolitica','indicadorescategoriaorg')
+        fields = ('id','nombre','fundacion_fecha', 'estado','descripcion','ruta_archivo','jne_idorganizacionpolitica','indicadorescategoriaorg')
 
