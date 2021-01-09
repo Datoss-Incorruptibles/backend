@@ -1,8 +1,9 @@
 from rest_framework import viewsets,views, generics, mixins
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import ProcesoSerializer, CargoSerializer , OrganizacionPoliticaSerializer , CandidatoSerializer
-from .models import Proceso, Cargo , OrganizacionPolitica , Candidato
+from .serializers import ProcesoSerializer, CargoSerializer , \
+    OrganizacionPoliticaSerializer , CandidatoSerializer, UbigeoSerializer
+from .models import Proceso, Cargo , OrganizacionPolitica , Candidato, Ubigeo
 
 
 class ProcesoViewSet(viewsets.ModelViewSet):
@@ -15,6 +16,9 @@ class CargoViewSet(viewsets.ModelViewSet):
     serializer_class = CargoSerializer
 
 
+class UbigeoViewSet(viewsets.ModelViewSet):
+    queryset = Ubigeo.objects.all()
+    serializer_class = UbigeoSerializer
 class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
     queryset = OrganizacionPolitica.objects.all().order_by('id')
     serializer_class = OrganizacionPoliticaSerializer

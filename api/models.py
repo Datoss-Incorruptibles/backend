@@ -27,12 +27,13 @@ class Cargo(models.Model):
 
 class OrganizacionPolitica(models.Model):
     nombre = models.CharField(max_length=150)
-    fundacion_anio = models.IntegerField()
+    fundacion_fecha = models.DateField(null=True)
     estado =  models.IntegerField()
-    descripcion = models.CharField(max_length=500)
+    descripcion = models.TextField()
     ruta_archivo = models.CharField(max_length=500)
     jne_idorganizacionpolitica = models.IntegerField()
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    url = models.CharField(max_length=150)
     fecha_modificacion = models.DateTimeField(null=True)
 
     class Meta:
@@ -80,6 +81,7 @@ class IndicadorCategoriaOrganizacion(models.Model):
     class Meta:
         db_table = "indicador_categoria_organizacion"
 
+<<<<<<< HEAD
 class IndicadorCategoriaCandidato(models.Model):
     indicador = models.ForeignKey("Indicador", on_delete=models.CASCADE)
     indicador_categoria = models.ForeignKey("IndicadorCategoria", on_delete=models.CASCADE)
@@ -122,3 +124,14 @@ class Candidato(models.Model):
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
         db_table = "candidato"
+=======
+
+class Ubigeo(models.Model):
+    ubigeo = models.CharField(max_length=10, primary_key=True)
+    region = models.CharField(max_length=150)
+    distrito_electoral = models.CharField(max_length=150)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+    class Meta:
+        db_table = "ubigeo"
+>>>>>>> master
