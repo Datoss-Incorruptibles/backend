@@ -35,4 +35,11 @@ class CandidatoViewSet(viewsets.ModelViewSet):
     serializer_class = CandidatoSerializer
 
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['organizacion_politica_id','cargo_id','region']
+    filterset_fields = ['organizacion_politica_id','region']
+
+    def get_queryset(self):
+        queryset = self.queryset
+        labels = tuple(self.request.query_params.get('cargo_ids', []))
+        if labels:
+            queryset = queryset.filter(cargo_id__in=labels)
+        return queryset
