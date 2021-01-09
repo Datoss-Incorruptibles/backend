@@ -39,7 +39,7 @@ class CandidatoViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
-        labels = tuple(self.request.query_params.get('cargo_ids', []))
-        if labels:
-            queryset = queryset.filter(cargo_id__in=labels)
+        cargo_ids = self.request.query_params.get('cargo_ids', [])
+        if cargo_ids:
+            queryset = queryset.filter(cargo_id__in=cargo_ids.split(","))
         return queryset
