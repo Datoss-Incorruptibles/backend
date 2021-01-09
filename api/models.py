@@ -81,7 +81,6 @@ class IndicadorCategoriaOrganizacion(models.Model):
     class Meta:
         db_table = "indicador_categoria_organizacion"
 
-<<<<<<< HEAD
 class IndicadorCategoriaCandidato(models.Model):
     indicador = models.ForeignKey("Indicador", on_delete=models.CASCADE)
     indicador_categoria = models.ForeignKey("IndicadorCategoria", on_delete=models.CASCADE)
@@ -124,7 +123,6 @@ class Candidato(models.Model):
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
         db_table = "candidato"
-=======
 
 class Ubigeo(models.Model):
     ubigeo = models.CharField(max_length=10, primary_key=True)
@@ -134,4 +132,3 @@ class Ubigeo(models.Model):
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
         db_table = "ubigeo"
->>>>>>> master
