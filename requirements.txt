@@ -7,3 +7,5 @@ serverless-wsgi==1.7.6
 sqlparse==0.4.1
 Werkzeug==1.0.1
 django-filter==2.4.0
+django-cors-headers==3.6.0
+

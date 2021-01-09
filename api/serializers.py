@@ -1,19 +1,26 @@
 from rest_framework import serializers
 
-from .models import Proceso, Cargo, OrganizacionPolitica, IndicadorCategoriaOrganizacion, IndicadorCategoriaCandidato ,IndicadorCategoria, Indicador ,Candidato
+from .models import Proceso, Cargo, OrganizacionPolitica, \
+IndicadorCategoriaOrganizacion, IndicadorCategoria, Indicador, \
+IndicadorCategoriaCandidato, Ubigeo
 
-class ProcesoSerializer(serializers.HyperlinkedModelSerializer):
+class ProcesoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Proceso
         fields = ('nombre', 'estado')
 
 
-class CargoSerializer(serializers.HyperlinkedModelSerializer):
+class CargoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cargo
         fields = ('cargo', 'estado')
 
 
+class UbigeoSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source='ubigeo', read_only=True)
+    class Meta:
+        model = Ubigeo
+        fields = ('id','region','distrito_electoral')
 class IndicadorSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -48,7 +55,7 @@ class OrganizacionPoliticaSerializer(serializers.ModelSerializer):
     indicadorescategoriaorg = IndicadorCategoriaOrganizacionSerializer(many=True, read_only=True)
     class Meta:
         model = OrganizacionPolitica
-        fields = ('id','nombre','fundacion_anio', 'estado','descripcion','ruta_archivo','jne_idorganizacionpolitica','indicadorescategoriaorg')
+        fields = ('id','nombre','fundacion_fecha', 'estado','descripcion','ruta_archivo','jne_idorganizacionpolitica','indicadorescategoriaorg')
 
 
 class CandidatoSerializer(serializers.ModelSerializer):
