@@ -43,6 +43,8 @@ class OrganizacionPolitica(models.Model):
 
 class Indicador(models.Model):
     nombre = models.CharField(max_length=150)
+    titulo = models.CharField(max_length=150)
+    ubicacion = models.IntegerField()
     alerta = models.IntegerField()
     estado = models.IntegerField()
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
@@ -65,7 +67,6 @@ class IndicadorCategoria(models.Model):
         db_table = "indicador_categoria"
     def __str__(self):
         return self.nombre
-
 
 class IndicadorCategoriaOrganizacion(models.Model):
     indicador = models.ForeignKey("Indicador", on_delete=models.CASCADE)
@@ -112,13 +113,13 @@ class Candidato(models.Model):
     apellido_paterno =  models.CharField(max_length=150)
     apellido_materno =  models.CharField(max_length=150)
     nombres =  models.CharField(max_length=150)
-    # fecha_nacimiento =  models.DateTimeField()
-    profesion =  models.CharField(max_length=150)
-    nivel_estudio_id_max =  models.IntegerField()
-    region =  models.CharField(max_length=150)
-    distrito_electoral =  models.CharField(max_length=150)
-    ubigeo_postula =  models.CharField(max_length=150)
-    ruta_archivo =  models.CharField(max_length=150)
+    fecha_nacimiento =  models.DateField()
+    profesion =  models.CharField(max_length=500, null=True)
+    nivel_estudio_id_max =  models.IntegerField(null=True)
+    region =  models.CharField(max_length=150, null=True)
+    distrito_electoral =  models.CharField(max_length=150, null=True)
+    ubigeo_postula =  models.CharField(max_length=150, null=True)
+    ruta_archivo =  models.CharField(max_length=150, null=True)
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
