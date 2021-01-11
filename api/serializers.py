@@ -59,6 +59,12 @@ class OrganizacionPoliticaSerializer(serializers.ModelSerializer):
         model = OrganizacionPolitica
         fields = ('id','nombre','fundacion_fecha', 'estado','descripcion','ruta_archivo','jne_idorganizacionpolitica','indicadorescategoriaorg')
 
+class OrganizacionPoliticaDetalleSerializer(serializers.ModelSerializer):
+    idPartidoPolitico = serializers.IntegerField(source='id', read_only=True)
+    partidoPolitico = serializers.CharField(source='nombre', read_only=True)
+    class Meta:
+        model = OrganizacionPolitica
+        fields = ('idPartidoPolitico','partidoPolitico', 'descripcion','url')
 
 class CandidatoSerializer(serializers.ModelSerializer):
     id = serializers

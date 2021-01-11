@@ -2,7 +2,7 @@ from rest_framework import viewsets,views, generics, mixins
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from .serializers import ProcesoSerializer, CargoSerializer , \
-    OrganizacionPoliticaSerializer , CandidatoSerializer, UbigeoSerializer
+    OrganizacionPoliticaSerializer,OrganizacionPoliticaDetalleSerializer , CandidatoSerializer, UbigeoSerializer
 from .models import Proceso, Cargo , OrganizacionPolitica , Candidato, Ubigeo
 from rest_framework.response import Response
 
@@ -27,7 +27,7 @@ class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, pk=None):
         queryset = self.queryset
         org = get_object_or_404(queryset, pk=pk)
-        serializer = OrganizacionPoliticaSerializer(org)
+        serializer = OrganizacionPoliticaDetalleSerializer(org)
         return Response(serializer.data)
     
 class OrganizacionPoliticaDetailViewSet(viewsets.ModelViewSet):
