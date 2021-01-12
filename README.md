@@ -26,6 +26,10 @@ Para ejecutar en local  considerar variables de entorno  de BD revisar `settings
     python manage.py migrate        #para migrar cambios de bd
     python manage.py runserver      #para ejecutar en local puerto 8000 por defecto
 
+
+## Ejecutar en docker 
+
+
 ## Desplegar 
 
 Desplegamos AWS:
