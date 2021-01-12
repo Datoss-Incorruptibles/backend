@@ -26,6 +26,8 @@ class IndicadorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Indicador
         fields = ('nombre','alerta','estado')
+
+
 class IndicadorCategoriaSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -37,10 +39,13 @@ class IndicadorCategoriaOrganizacionSerializer(serializers.ModelSerializer):
     indicador_nombre = serializers.CharField(source='indicador', read_only=True)
     indicador_titulo = serializers.CharField(source='indicador.titulo', read_only=True)
     indicador_ubicacion = serializers.IntegerField(source='indicador.ubicacion', read_only=True)
+    indicador_alerta = serializers.IntegerField(source='indicador.alerta', read_only=True)
+
     class Meta:
         model = IndicadorCategoriaOrganizacion
         fields = ('indicador_categoria_nombre','indicador_categoria','indicador_nombre','indicador',
-                'cantidad','porcentaje','alerta','estado','indicador_titulo','indicador_ubicacion')
+                'cantidad','porcentaje','alerta','estado','indicador_titulo','indicador_ubicacion','indicador_alerta')
+    
 
 class IndicadorCategoriaCandidatoSerializer(serializers.ModelSerializer):
     indicador_categoria_nombre = serializers.CharField(source='indicador_categoria', read_only=True)
@@ -52,8 +57,6 @@ class IndicadorCategoriaCandidatoSerializer(serializers.ModelSerializer):
 
 
 class OrganizacionPoliticaSerializer(serializers.ModelSerializer):
-    id = serializers
-    # tracks = serializers.StringRelatedField(many=True)
     indicadorescategoriaorg = IndicadorCategoriaOrganizacionSerializer(many=True, read_only=True)
     class Meta:
         model = OrganizacionPolitica

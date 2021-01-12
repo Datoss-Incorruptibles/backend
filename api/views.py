@@ -2,8 +2,10 @@ from rest_framework import viewsets,views, generics, mixins
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from .serializers import ProcesoSerializer, CargoSerializer , \
-    OrganizacionPoliticaSerializer , CandidatoSerializer, UbigeoSerializer
-from .models import Proceso, Cargo , OrganizacionPolitica , Candidato, Ubigeo
+    OrganizacionPoliticaSerializer , CandidatoSerializer, UbigeoSerializer, \
+    IndicadorCategoriaSerializer, IndicadorCategoriaOrganizacionSerializer
+from .models import Proceso, Cargo , OrganizacionPolitica , Candidato, Ubigeo, \
+IndicadorCategoria, IndicadorCategoriaOrganizacion
 from rest_framework.response import Response
 
 
@@ -16,19 +18,29 @@ class CargoViewSet(viewsets.ModelViewSet):
     queryset = Cargo.objects.all().order_by('cargo')
     serializer_class = CargoSerializer
 
+class IndicadorCategoriaViewSet(viewsets.ModelViewSet):
+    queryset = IndicadorCategoria.objects.all().order_by('order')
+    serializer_class = IndicadorCategoriaSerializer
 
+class IndicadorCategoriaOrganizacionViewSet(viewsets.ModelViewSet):
+    queryset = IndicadorCategoriaOrganizacion.objects.filter(estado=1).order_by("indicador_id")
+    serializer_class = IndicadorCategoriaOrganizacionSerializer
+#    print(queryset.query)
+
+    
 class UbigeoViewSet(viewsets.ModelViewSet):
     queryset = Ubigeo.objects.all()
     serializer_class = UbigeoSerializer
 
 class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
-    queryset = OrganizacionPolitica.objects.all()
+    queryset = OrganizacionPolitica.objects.filter(estado=1).order_by('nombre')
     serializer_class = OrganizacionPoliticaSerializer
     def retrieve(self, request, pk=None):
         queryset = self.queryset
         org = get_object_or_404(queryset, pk=pk)
         serializer = OrganizacionPoliticaSerializer(org)
         return Response(serializer.data)
+
     
 class OrganizacionPoliticaDetailViewSet(viewsets.ModelViewSet):
     queryset = OrganizacionPolitica.objects.all().order_by('id')
