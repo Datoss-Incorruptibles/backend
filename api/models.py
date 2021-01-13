@@ -81,6 +81,7 @@ class IndicadorCategoriaOrganizacion(models.Model):
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
         db_table = "indicador_categoria_organizacion"
+        ordering = ('indicador','indicador_categoria__order')
 
 class IndicadorCategoriaCandidato(models.Model):
     indicador = models.ForeignKey("Indicador", on_delete=models.CASCADE)
