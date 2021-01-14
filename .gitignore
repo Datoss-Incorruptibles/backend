@@ -5,3 +5,4 @@ env.yml
 env
 *.sh
 data/
+backend/staticfiles
