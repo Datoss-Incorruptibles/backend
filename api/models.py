@@ -96,12 +96,13 @@ class IndicadorCategoriaCandidato(models.Model):
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
         db_table = "indicador_categoria_candidato"
+        ordering = ('indicador','indicador_categoria__order')
 
 
 class Candidato(models.Model):
 
-    jne_idcandidato =  models.IntegerField()
-    jne_idhojavida  = models.IntegerField()
+    jne_idcandidato = models.IntegerField()
+    jne_idhojavida = models.IntegerField()
     jne_estado_lista =  models.CharField(max_length=150)
     jne_estado_expediente =  models.CharField(max_length=150)
     jne_estado_hojavida =  models.CharField(max_length=150)
@@ -134,3 +135,62 @@ class Ubigeo(models.Model):
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
         db_table = "ubigeo"
+
+
+class CandidatoEstudio(models.Model):
+
+    jne_idhojavida = models.IntegerField()
+    jne_idhvestudio = models.IntegerField()
+    jne_tabla = models.CharField(max_length=150)  	
+    nivel_estudio_id = models.CharField(max_length=250) 
+    nivel_estudio = models.CharField(max_length=250)
+    nivel_estudio_estado = models.CharField(max_length=250)
+    grado = models.CharField(max_length=250)
+    institucion = models.CharField(max_length=250)
+    estudio = models.CharField(max_length=250)
+    institucion_id = models.IntegerField()
+    estudio_id = models.IntegerField()
+    comentario = models.TextField(null=True)
+    anio_bachiller = models.CharField(max_length=4)
+    anio_titulo = models.CharField(max_length=4)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+
+    class Meta:
+        db_table = "candidato_estudio"
+
+
+class CandidatoJudicial(models.Model):
+
+    sentencia = models.CharField(max_length=150)
+    nro_expediente = models.CharField(max_length=50)
+    fallo = models.CharField(max_length=500)
+    cumple_fallo = models.CharField(max_length=150, null=True)
+    fecha_sentencia = models.DateField(null=True)
+    modalidad = models.CharField(max_length=150, null=True)
+    tipo_proceso = models.CharField(max_length=150)
+    estado_proceso = models.CharField(max_length=50)
+    jne_idhojavida = models.IntegerField()
+    jne_idhvsentencia = models.IntegerField()
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+
+    class Meta:
+        db_table = "candidato_judicial"
+
+
+class CandidatoExperiencia(models.Model):
+
+    tipo = models.IntegerField()
+    jne_idhojavida = models.IntegerField()
+    jne_idhvexpelaboral = models.IntegerField()	
+    item_expelaboral = models.IntegerField()
+    centro_trabajo = models.CharField(max_length=250)
+    ocupacion_profesion = models.CharField(max_length=250)
+    anio_trabajo_desde = models.CharField(max_length=4)
+    anio_trabajo_hasta = models.CharField(max_length=4)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+
+    class Meta:
+        db_table = "candidato_experiencia"
