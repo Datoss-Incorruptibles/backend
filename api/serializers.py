@@ -44,8 +44,7 @@ class IndicadorCategoriaOrganizacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = IndicadorCategoriaOrganizacion
         fields = ('indicador_categoria_nombre','indicador_categoria','indicador_nombre','indicador',
-                'cantidad','porcentaje','alerta','estado','indicador_titulo','indicador_ubicacion','indicador_alerta')
-    
+                'cantidad','porcentaje','alerta','indicador_titulo','indicador_ubicacion','indicador_alerta')
 
 class IndicadorCategoriaCandidatoSerializer(serializers.ModelSerializer):
     indicador_categoria_nombre = serializers.CharField(source='indicador_categoria', read_only=True)
@@ -75,3 +74,11 @@ class CandidatoSerializer(serializers.ModelSerializer):
         'proceso_id','proceso_id','organizacion_politica_id', 'documento_identidad','apellido_paterno','apellido_materno','nombres',
         'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula','ruta_archivo','fecha_registro','fecha_modificacion','indicadores_categoria_candidato')
 
+
+
+class CandidatoDetailSerializer(serializers.ModelSerializer):
+    indicadores_categoria_candidato = IndicadorCategoriaCandidatoSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Candidato
+        fields = ('documento_identidad','apellido_paterno','apellido_materno','nombres', 'profesion','fecha_nacimiento','indicadores_categoria_candidato')

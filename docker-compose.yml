@@ -16,7 +16,7 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     environment:
       - DB_HOST=db
-      - DB_NAME=elecciones
+      - DB_NAME=elecciones2021
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - SECRET_KEY=e_(x5@3t65y996!ch$m*uf6y3j1a8zeh$h4=uiktp0c9oarkla

@@ -1,6 +1,6 @@
 # Elecciones 2021 Backend
 
-## Instalar 
+## Ejecutar en local  
 
 Requisitos:
 - Tener instalado python3.8
@@ -18,16 +18,20 @@ Node:
     npm install -g serverless
     npm install
 
-
-## Ejecutar en local 
-
 Para ejecutar en local  considerar variables de entorno  de BD revisar `settings.py` 
 
     python manage.py migrate        #para migrar cambios de bd
     python manage.py runserver      #para ejecutar en local puerto 8000 por defecto
 
+## Ejecutar en Docker 
 
-## Ejecutar en docker 
+Para levantar el proyecto django + postgres ejecutar 
+
+    make up   ## internamente ejecuta docker-compose up -d 
+
+Para detener los servicios de django + postgres ejecutar 
+
+    make down
 
 
 ## Desplegar 

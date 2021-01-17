@@ -3,7 +3,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from .serializers import ProcesoSerializer, CargoSerializer , \
     OrganizacionPoliticaSerializer , CandidatoSerializer, UbigeoSerializer, \
-    IndicadorCategoriaSerializer, IndicadorCategoriaOrganizacionSerializer
+    IndicadorCategoriaSerializer, IndicadorCategoriaOrganizacionSerializer, \
+    CandidatoDetailSerializer
 from .models import Proceso, Cargo , OrganizacionPolitica , Candidato, Ubigeo, \
 IndicadorCategoria, IndicadorCategoriaOrganizacion
 from rest_framework.response import Response
@@ -25,8 +26,6 @@ class IndicadorCategoriaViewSet(viewsets.ModelViewSet):
 class IndicadorCategoriaOrganizacionViewSet(viewsets.ModelViewSet):
     queryset = IndicadorCategoriaOrganizacion.objects.filter(estado=1).order_by("indicador_id")
     serializer_class = IndicadorCategoriaOrganizacionSerializer
-#    print(queryset.query)
-
     
 class UbigeoViewSet(viewsets.ModelViewSet):
     queryset = Ubigeo.objects.all()
@@ -40,12 +39,6 @@ class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
         org = get_object_or_404(queryset, pk=pk)
         serializer = OrganizacionPoliticaSerializer(org)
         return Response(serializer.data)
-
-    
-class OrganizacionPoliticaDetailViewSet(viewsets.ModelViewSet):
-    queryset = OrganizacionPolitica.objects.all().order_by('id')
-    serializer_class = OrganizacionPoliticaSerializer
-
 
 class CandidatoViewSet(viewsets.ModelViewSet):
 
@@ -61,3 +54,10 @@ class CandidatoViewSet(viewsets.ModelViewSet):
         if cargo_ids:
             queryset = queryset.filter(cargo_id__in=cargo_ids.split(","))
         return queryset
+
+    
+    def retrieve(self, request, pk=None):
+        queryset = self.queryset
+        candidato = get_object_or_404(queryset, pk=pk)
+        serializer = CandidatoDetailSerializer(candidato)
+        return Response(serializer.data)
