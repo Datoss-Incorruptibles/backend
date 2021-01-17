@@ -2,7 +2,8 @@ from rest_framework import serializers
 
 from .models import Proceso, Cargo, OrganizacionPolitica, \
 IndicadorCategoriaOrganizacion, IndicadorCategoria, Indicador, \
-IndicadorCategoriaCandidato, Ubigeo, Candidato
+IndicadorCategoriaCandidato, Ubigeo, Candidato, CandidatoEstudio, \
+CandidatoJudicial, CandidatoExperiencia
 
 class ProcesoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -78,7 +79,23 @@ class CandidatoSerializer(serializers.ModelSerializer):
 
 class CandidatoDetailSerializer(serializers.ModelSerializer):
     indicadores_categoria_candidato = IndicadorCategoriaCandidatoSerializer(many=True, read_only=True)
+    estudios = serializers.SerializerMethodField()
+
+    def get_estudios(self, obj):
+        candidato_estudios = CandidatoEstudio.objects.filter(jne_idhojavida=obj.jne_idhojavida).order_by('-nivel_estudio_id')
+        if not candidato_estudios:
+            return None
+        return CandidatoEstudioSerializer(candidato_estudios, many=True).data
 
     class Meta:
         model = Candidato
-        fields = ('documento_identidad','apellido_paterno','apellido_materno','nombres', 'profesion','fecha_nacimiento','indicadores_categoria_candidato')
+        fields = ('documento_identidad','apellido_paterno','apellido_materno','nombres', 'profesion',
+                    'fecha_nacimiento','indicadores_categoria_candidato','estudios')
+
+
+class CandidatoEstudioSerializer(serializers.Serializer):
+    grado = serializers.CharField()
+    institucion = serializers.CharField()
+    estudio = serializers.CharField()
+    anio_bachiller = serializers.CharField()
+    anio_titulo = serializers.CharField()
