@@ -1,4 +1,5 @@
 from rest_framework import viewsets,views, generics, mixins
+from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from .serializers import ProcesoSerializer, CargoSerializer , \
@@ -33,7 +34,7 @@ class UbigeoViewSet(viewsets.ModelViewSet):
     serializer_class = UbigeoSerializer
 
 class OrgPolComboViewSet(viewsets.ModelViewSet):
-    queryset = OrganizacionPolitica.objects.all()
+    queryset = OrganizacionPolitica.objects.filter(estado=1)
     serializer_class = OrgPolComboSerializer
     
 class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
@@ -46,8 +47,9 @@ class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 class CandidatoViewSet(viewsets.ModelViewSet):
-
-    queryset = Candidato.objects.all()
+    
+    queryset = Candidato.objects.exclude(Q(jne_estado_lista='INADMISIBLE') | Q(jne_estado_lista='IMPROCEDENTE')) \
+                .exclude(Q(jne_estado_expediente='INADMISIBLE') | Q(jne_estado_expediente='IMPROCEDENTE')) 
     serializer_class = CandidatoSerializer
 
     filter_backends = [DjangoFilterBackend]
