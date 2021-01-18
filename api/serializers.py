@@ -22,6 +22,16 @@ class UbigeoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ubigeo
         fields = ('id','region','distrito_electoral')
+
+
+
+class OrgPolComboSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrganizacionPolitica
+        fields = ('id','nombre', 'estado','jne_idorganizacionpolitica')
+
+
+        
 class IndicadorSerializer(serializers.ModelSerializer):
 
     class Meta:

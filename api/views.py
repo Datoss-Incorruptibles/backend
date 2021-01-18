@@ -2,7 +2,8 @@ from rest_framework import viewsets,views, generics, mixins
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from .serializers import ProcesoSerializer, CargoSerializer , \
-    OrganizacionPoliticaSerializer , CandidatoSerializer, UbigeoSerializer, \
+    OrganizacionPoliticaSerializer , CandidatoSerializer, \
+    UbigeoSerializer, OrgPolComboSerializer , \
     IndicadorCategoriaSerializer, IndicadorCategoriaOrganizacionSerializer, \
     CandidatoDetailSerializer
 from .models import Proceso, Cargo , OrganizacionPolitica , Candidato, Ubigeo, \
@@ -31,6 +32,10 @@ class UbigeoViewSet(viewsets.ModelViewSet):
     queryset = Ubigeo.objects.all()
     serializer_class = UbigeoSerializer
 
+class OrgPolComboViewSet(viewsets.ModelViewSet):
+    queryset = OrganizacionPolitica.objects.all()
+    serializer_class = OrgPolComboSerializer
+    
 class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
     queryset = OrganizacionPolitica.objects.filter(estado=1).order_by('nombre')
     serializer_class = OrganizacionPoliticaSerializer
