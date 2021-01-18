@@ -47,14 +47,13 @@ class IndicadorCategoriaSerializer(serializers.ModelSerializer):
 
 class IndicadorCategoriaOrganizacionSerializer(serializers.ModelSerializer):
     indicador_categoria_nombre = serializers.CharField(source='indicador_categoria', read_only=True)
-    indicador_nombre = serializers.CharField(source='indicador', read_only=True)
     indicador_titulo = serializers.CharField(source='indicador.titulo', read_only=True)
     indicador_ubicacion = serializers.IntegerField(source='indicador.ubicacion', read_only=True)
     indicador_alerta = serializers.IntegerField(source='indicador.alerta', read_only=True)
 
     class Meta:
         model = IndicadorCategoriaOrganizacion
-        fields = ('indicador_categoria_nombre','indicador_categoria','indicador_nombre','indicador',
+        fields = ('indicador_categoria_nombre','indicador_categoria','indicador',
                 'cantidad','porcentaje','alerta','indicador_titulo','indicador_ubicacion','indicador_alerta')
 
 class IndicadorCategoriaCandidatoSerializer(serializers.ModelSerializer):
@@ -70,11 +69,11 @@ class OrganizacionPoliticaSerializer(serializers.ModelSerializer):
     indicadorescategoriaorg = IndicadorCategoriaOrganizacionSerializer(many=True, read_only=True)
     class Meta:
         model = OrganizacionPolitica
-        fields = ('id','nombre','fundacion_fecha', 'estado','descripcion','ruta_archivo','jne_idorganizacionpolitica','indicadorescategoriaorg')
+        fields = ('id','nombre','fundacion_fecha', 'estado','descripcion','ruta_archivo',
+                    'jne_idorganizacionpolitica','indicadorescategoriaorg')
 
 
 class CandidatoSerializer(serializers.ModelSerializer):
-    id = serializers
 
     # candidatos by org pol and cargo pol 
     indicadores_categoria_candidato = IndicadorCategoriaCandidatoSerializer(many=True, read_only=True)
@@ -82,7 +81,7 @@ class CandidatoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Candidato
         fields = ('id', 'jne_idcandidato','jne_idhojavida','jne_estado_lista', 'jne_estado_expediente','jne_estado_hojavida','jne_posicion','jne_organizacion_politica','cargo_id',
-        'proceso_id','proceso_id','organizacion_politica_id', 'documento_identidad','apellido_paterno','apellido_materno','nombres',
+        'proceso_id','proceso_id','organizacion_politica_id','organizacion_politica_logo', 'documento_identidad','apellido_paterno','apellido_materno','nombres',
         'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula','ruta_archivo','fecha_registro','fecha_modificacion','indicadores_categoria_candidato')
 
 

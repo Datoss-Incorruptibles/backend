@@ -127,6 +127,10 @@ class Candidato(models.Model):
     class Meta:
         db_table = "candidato"
 
+    @property
+    def organizacion_politica_logo(self):
+        return OrganizacionPolitica.objects.get(pk=self.organizacion_politica_id).ruta_archivo
+
 class Ubigeo(models.Model):
     ubigeo = models.CharField(max_length=10, primary_key=True)
     region = models.CharField(max_length=150)
