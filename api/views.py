@@ -34,7 +34,7 @@ class UbigeoViewSet(viewsets.ModelViewSet):
     serializer_class = UbigeoSerializer
 
 class OrgPolComboViewSet(viewsets.ModelViewSet):
-    queryset = OrganizacionPolitica.objects.filter(estado=1)
+    queryset = OrganizacionPolitica.objects.filter(estado=1).order_by('nombre')
     serializer_class = OrgPolComboSerializer
     
 class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
@@ -49,11 +49,12 @@ class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
 class CandidatoViewSet(viewsets.ModelViewSet):
     
     queryset = Candidato.objects.exclude(Q(jne_estado_lista='INADMISIBLE') | Q(jne_estado_lista='IMPROCEDENTE')) \
-                .exclude(Q(jne_estado_expediente='INADMISIBLE') | Q(jne_estado_expediente='IMPROCEDENTE')) 
+                .exclude(Q(jne_estado_expediente='INADMISIBLE') | Q(jne_estado_expediente='IMPROCEDENTE')) \
+                .order_by('distrito_electoral','jne_organizacion_politica','jne_posicion')
     serializer_class = CandidatoSerializer
 
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['organizacion_politica_id','region']
+    filterset_fields = ['organizacion_politica_id','region','ubigeo_postula']
 
     def get_queryset(self):
         queryset = self.queryset
