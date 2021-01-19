@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Proceso, Cargo, OrganizacionPolitica, \
 IndicadorCategoriaOrganizacion, IndicadorCategoria, Indicador, \
 IndicadorCategoriaCandidato, Ubigeo, Candidato, CandidatoEstudio, \
-CandidatoJudicial, CandidatoExperiencia
+CandidatoJudicial, CandidatoExperiencia, IndicadorCategoriaCandidato
 
 class ProcesoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -76,14 +76,31 @@ class OrganizacionPoliticaSerializer(serializers.ModelSerializer):
 class CandidatoSerializer(serializers.ModelSerializer):
 
     # candidatos by org pol and cargo pol 
-    indicadores_categoria_candidato = IndicadorCategoriaCandidatoSerializer(many=True, read_only=True)
+    indicadores = serializers.SerializerMethodField()
+
+    def get_indicadores(self, obj):
+        indicadores = IndicadorCategoriaCandidato.objects.filter(candidato=obj.pk, estado=1).order_by('indicador','indicador_categoria')
+        if not indicadores:
+            return None
+        return IndicadoresCandidatoSerializer(indicadores, many=True, read_only=True).data
 
     class Meta:
         model = Candidato
         fields = ('id', 'jne_idcandidato','jne_idhojavida','jne_estado_lista', 'jne_estado_expediente','jne_estado_hojavida','jne_posicion','jne_organizacion_politica','cargo_id',
         'proceso_id','proceso_id','organizacion_politica_id','organizacion_politica_logo', 'documento_identidad','apellido_paterno','apellido_materno','nombres',
-        'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula','ruta_archivo','fecha_registro','fecha_modificacion','indicadores_categoria_candidato')
+        'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula','ruta_archivo','fecha_registro','fecha_modificacion','indicadores')
 
+
+class IndicadoresCandidatoSerializer(serializers.Serializer):
+
+    indicador_categoria = serializers.CharField(source="indicador_categoria.nombre")
+    indicador_categoria_id = serializers.IntegerField()
+    indicador = serializers.CharField(source="indicador.titulo")
+    indicador_id = serializers.IntegerField()
+    cantidad = serializers.IntegerField()
+    porcentaje = serializers.FloatField()
+    alerta = serializers.IntegerField()
+    estado = serializers.IntegerField()
 
 
 class CandidatoDetailSerializer(serializers.ModelSerializer):
