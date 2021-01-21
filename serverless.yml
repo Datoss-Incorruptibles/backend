@@ -24,4 +24,4 @@ custom:
   wsgi:
     app: backend.wsgi.application
     packRequirements: false
-  variables: ${file(./env.yml)}
+  variables: ${file(./env-${opt:stage, self:provider.stage, 'dev'}.yml)}
