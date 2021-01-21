@@ -1,7 +1,8 @@
 __pycache__/
 .serverless/
 node_modules/
-env.yml
+env-dev.yml
+env-prod.yml
 env
 *.sh
 data/
