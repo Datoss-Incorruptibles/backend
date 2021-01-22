@@ -139,9 +139,11 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Candidato
-        fields = ('documento_identidad','apellido_paterno','apellido_materno','nombres', 'profesion',
-                    'fecha_nacimiento','indicadores_categoria_candidato','sentencias','estudios','experiencialaboral',
-                    'experienciapolitica')
+        fields = ('id', 'jne_idcandidato','jne_idhojavida','jne_estado_lista', 'jne_estado_expediente','jne_estado_hojavida','jne_posicion','jne_organizacion_politica','cargo_id',
+                    'proceso_id','proceso_id','organizacion_politica_id','organizacion_politica_logo', 'documento_identidad','apellido_paterno','apellido_materno','nombres',
+                    'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula','ruta_archivo','fecha_nacimiento','fecha_registro','fecha_modificacion',
+                    'indicadores_categoria_candidato','sentencias','estudios','experiencialaboral','experienciapolitica')
+
 
 
 
