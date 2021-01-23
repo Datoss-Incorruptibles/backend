@@ -155,6 +155,7 @@ class CandidatoEstudioSerializer(serializers.Serializer):
     estudio = serializers.CharField()
     anio_bachiller = serializers.CharField()
     anio_titulo = serializers.CharField()
+    nivel_estudio_estado = serializers.CharField()
 
 class CandidatoJudicialSerializer(serializers.Serializer):
     tipo_proceso = serializers.CharField()
