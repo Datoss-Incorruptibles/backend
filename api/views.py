@@ -1,5 +1,5 @@
-from rest_framework import viewsets,views, generics, mixins
-from django.db.models import Q
+from rest_framework import viewsets,views, generics, mixins, filters
+from django.db.models import Q, Count
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from .serializers import ProcesoSerializer, CargoSerializer , \
@@ -38,8 +38,18 @@ class OrgPolComboViewSet(viewsets.ModelViewSet):
     serializer_class = OrgPolComboSerializer
     
 class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
-    queryset = OrganizacionPolitica.objects.filter(estado=1).order_by('nombre')
+    queryset = OrganizacionPolitica.objects.filter(estado=1)
     serializer_class = OrganizacionPoliticaSerializer
+
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['nombre', 'fundacion_fecha','sentencias']
+    ordering = ['nombre']
+
+
+    def get_queryset(self):
+        queryset = self.queryset.annotate(sentencias=Count('indicadorescategoriaorg', \
+            filter=(Q(indicadorescategoriaorg__indicador=8) | Q(indicadorescategoriaorg__indicador=9)))) 
+        return queryset
     def retrieve(self, request, pk=None):
         queryset = self.queryset
         org = get_object_or_404(queryset, pk=pk)

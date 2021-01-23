@@ -41,6 +41,10 @@ class OrganizacionPolitica(models.Model):
     def __str__(self):
         return self.nombre
 
+    @property
+    def sentencia_civil(self):
+        return IndicadorCategoriaOrganizacion.objects.filter(indicador=8,organizacion=self.pk).count()
+
 class Indicador(models.Model):
     nombre = models.CharField(max_length=150)
     titulo = models.CharField(max_length=150)
