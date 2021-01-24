@@ -58,7 +58,8 @@ class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
 
 class CandidatoViewSet(viewsets.ModelViewSet):
     
-    queryset = Candidato.objects.exclude(Q(jne_estado_lista='INADMISIBLE') | Q(jne_estado_lista='IMPROCEDENTE')) \
+    queryset = Candidato.objects \
+                .exclude(Q(jne_estado_lista='INADMISIBLE') | Q(jne_estado_lista='IMPROCEDENTE')) \
                 .exclude(Q(jne_estado_expediente='INADMISIBLE') | Q(jne_estado_expediente='IMPROCEDENTE')) \
                 .order_by('distrito_electoral','jne_organizacion_politica','jne_posicion')
     serializer_class = CandidatoSerializer
@@ -71,6 +72,11 @@ class CandidatoViewSet(viewsets.ModelViewSet):
         cargo_ids = self.request.query_params.get('cargo_ids', [])
         if cargo_ids:
             queryset = queryset.filter(cargo_id__in=cargo_ids.split(","))
+        indicadores = self.request.query_params.get('indicador_ids', [])
+        if indicadores:
+            queryset = queryset.annotate(indicadores=Count('indicadores_categoria_candidato', \
+                filter=(Q(indicadores_categoria_candidato__indicador__in=indicadores.split(","))))) \
+                .filter(indicadores__gt=0)
         return queryset
 
     
