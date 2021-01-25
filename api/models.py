@@ -202,3 +202,73 @@ class CandidatoExperiencia(models.Model):
 
     class Meta:
         db_table = "candidato_experiencia"
+
+
+
+class CandidatoIngreso(models.Model):
+    jne_idhojavida = models.IntegerField()
+    jne_idhvingresos = models.IntegerField()
+    renta_bruta_privado = models.DecimalField(max_digits=15, decimal_places=2)
+    renta_bruta_publico = models.DecimalField(max_digits=15, decimal_places=2)
+    renta_individual_privado = models.DecimalField(max_digits=15, decimal_places=2)
+    renta_individual_publico = models.DecimalField(max_digits=15, decimal_places=2)
+    otros_ingresos_privado = models.DecimalField(max_digits=15, decimal_places=2)
+    otros_ingresos_publico = models.DecimalField(max_digits=15, decimal_places=2)
+    anio_ingresos = models.IntegerField()
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+
+    class Meta:
+        db_table = 'candidato_ingreso'
+        verbose_name='Candidato Ingresos'
+        verbose_name_plural=verbose_name
+
+    def __str__(self):
+        return self.id
+
+class CandidatoInmueble(models.Model):
+
+    jne_idhojavida = models.IntegerField()
+    jne_idhvbieninmueble = models.IntegerField()
+    jne_strinmueblesunarp = models.IntegerField() 
+    jne_decautovaluo = models.FloatField()
+    direccion = models.TextField()
+    valor = models.DecimalField(max_digits=15, decimal_places=2)
+    order = models.IntegerField()
+    comentario = models.TextField(null=True)
+    partida_sunarp = models.CharField(max_length=50, null=True, blank=True)
+    tipo = models.CharField(max_length=80)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+    
+    class Meta:
+        db_table = 'candidato_inmueble'
+        verbose_name='Candidato Bienes Inmuebles'
+        verbose_name_plural=verbose_name
+
+    def __str__(self):
+        return self.partida_sunarp
+
+
+class CandidatoMueble(models.Model):
+    jne_idhojavida = models.IntegerField()
+    jne_idhvbienmueble = models.IntegerField()
+    caracteristica = models.CharField(max_length=100)
+    comentario = models.CharField(max_length=250, null=True, blank=True)
+    marca =  models.CharField(max_length=100, null=True, blank=True)
+    order = models.IntegerField()
+    modelo = models.CharField(max_length=100, null=True, blank=True)
+    placa = models.CharField(max_length=50)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    vehiculo = models.CharField(max_length=100)
+
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+    
+    class Meta:
+        db_table = 'candidato_mueble'
+        verbose_name = "Candidato Bienes Muebles"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.vehiculo
