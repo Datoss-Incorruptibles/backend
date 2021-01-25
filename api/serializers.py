@@ -3,7 +3,8 @@ from rest_framework import serializers
 from .models import Proceso, Cargo, OrganizacionPolitica, \
 IndicadorCategoriaOrganizacion, IndicadorCategoria, Indicador, \
 IndicadorCategoriaCandidato, Ubigeo, Candidato, CandidatoEstudio, \
-CandidatoJudicial, CandidatoExperiencia, IndicadorCategoriaCandidato
+CandidatoJudicial, CandidatoExperiencia, IndicadorCategoriaCandidato, \
+CandidatoIngreso, CandidatoInmueble, CandidatoMueble
 
 class ProcesoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -111,6 +112,7 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
     sentencias = serializers.SerializerMethodField()
     experiencialaboral = serializers.SerializerMethodField()
     experienciapolitica = serializers.SerializerMethodField()
+    ingresos = serializers.SerializerMethodField()
 
     def get_sentencias(self, obj):
         candidato_sentencias = CandidatoJudicial.objects.filter(jne_idhojavida=obj.jne_idhojavida).order_by('tipo_proceso')
@@ -136,15 +138,19 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
             return None
         return CandidatoExperiencialSerializer(candidato_exp_politica, many=True).data
 
-
-
+    def get_ingresos(self, obj):
+        candidato_ingresos = CandidatoIngreso.objects.filter(jne_idhojavida=obj.jne_idhojavida)
+        if not candidato_ingresos:
+            return None
+        return CandidatoIngresoSerializer(candidato_ingresos, many=True).data
+       
 
     class Meta:
         model = Candidato
         fields = ('id', 'jne_idcandidato','jne_idhojavida','jne_estado_lista', 'jne_estado_expediente','jne_estado_hojavida','jne_posicion','jne_organizacion_politica','cargo_id',
                     'proceso_id','proceso_id','organizacion_politica_id','organizacion_politica_logo', 'documento_identidad','apellido_paterno','apellido_materno','nombres',
                     'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula','ruta_archivo','fecha_nacimiento','fecha_registro','fecha_modificacion',
-                    'indicadores_categoria_candidato','sentencias','estudios','experiencialaboral','experienciapolitica')
+                    'indicadores_categoria_candidato','sentencias','estudios','experiencialaboral','experienciapolitica','ingresos')
 
 
 
@@ -171,3 +177,14 @@ class CandidatoExperiencialSerializer(serializers.Serializer):
     ocupacion_profesion = serializers.CharField()
     anio_trabajo_desde = serializers.CharField()
     anio_trabajo_hasta = serializers.CharField()
+
+
+class CandidatoIngresoSerializer(serializers.Serializer):
+
+    renta_bruta_privado = serializers.FloatField()
+    renta_bruta_publico = serializers.FloatField()
+    renta_individual_privado = serializers.FloatField()
+    renta_individual_publico = serializers.FloatField()
+    otros_ingresos_privado = serializers.FloatField()
+    otros_ingresos_publico = serializers.FloatField()
+    anio_ingresos = serializers.IntegerField()
