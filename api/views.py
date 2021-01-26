@@ -77,6 +77,10 @@ class CandidatoViewSet(viewsets.ModelViewSet):
             queryset = queryset.annotate(indicadores=Count('indicadores_categoria_candidato', \
                 filter=(Q(indicadores_categoria_candidato__indicador__in=indicadores.split(","))))) \
                 .filter(indicadores__gt=0)
+    
+        max_estudios = self.request.query_params.get('max_estudios_ids', [])
+        if max_estudios:
+            queryset = queryset.filter(nivel_estudio_id_max__in=max_estudios.split(","))
         return queryset
 
     

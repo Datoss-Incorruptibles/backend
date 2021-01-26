@@ -60,10 +60,11 @@ class IndicadorCategoriaOrganizacionSerializer(serializers.ModelSerializer):
 class IndicadorCategoriaCandidatoSerializer(serializers.ModelSerializer):
     indicador_categoria_nombre = serializers.CharField(source='indicador_categoria', read_only=True)
     indicador_nombre = serializers.CharField(source='indicador', read_only=True)
+    nivel = serializers.IntegerField(source='indicador_categoria.order', read_only=True)
     class Meta:
         model = IndicadorCategoriaCandidato
         fields = ('indicador_categoria_nombre','indicador_categoria','indicador_nombre','indicador',
-                'cantidad','porcentaje','alerta','estado')
+                'cantidad','porcentaje','alerta','estado','nivel')
 
 
 class OrganizacionPoliticaSerializer(serializers.ModelSerializer):
