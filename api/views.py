@@ -64,7 +64,9 @@ class CandidatoViewSet(viewsets.ModelViewSet):
                 .order_by('distrito_electoral','jne_organizacion_politica','jne_posicion')
     serializer_class = CandidatoSerializer
 
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ['documento_identidad','apellido_paterno','apellido_materno','nombres']
+
     filterset_fields = ['organizacion_politica_id','region','ubigeo_postula']
 
     def get_queryset(self):

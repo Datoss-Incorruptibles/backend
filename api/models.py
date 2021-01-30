@@ -259,7 +259,7 @@ class CandidatoMueble(models.Model):
     order = models.IntegerField()
     modelo = models.CharField(max_length=100, null=True, blank=True)
     placa = models.CharField(max_length=50)
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=15, decimal_places=2)
     vehiculo = models.CharField(max_length=100)
 
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
