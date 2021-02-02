@@ -1,7 +1,10 @@
-from rest_framework import viewsets,views, generics, mixins, filters
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Sum
+from django.db.models.functions import Coalesce
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
+from rest_framework import viewsets,views, generics, mixins, filters
+from rest_framework.response import Response
+
 from .serializers import ProcesoSerializer, CargoSerializer , \
     OrganizacionPoliticaSerializer , CandidatoSerializer, \
     UbigeoSerializer, OrgPolComboSerializer , \
@@ -9,7 +12,6 @@ from .serializers import ProcesoSerializer, CargoSerializer , \
     CandidatoDetailSerializer
 from .models import Proceso, Cargo , OrganizacionPolitica , Candidato, Ubigeo, \
 IndicadorCategoria, IndicadorCategoriaOrganizacion
-from rest_framework.response import Response
 
 
 class ProcesoViewSet(viewsets.ModelViewSet):
@@ -47,8 +49,8 @@ class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
 
 
     def get_queryset(self):
-        queryset = self.queryset.annotate(sentencias=Count('indicadorescategoriaorg', \
-            filter=(Q(indicadorescategoriaorg__indicador=8) | Q(indicadorescategoriaorg__indicador=9)))) 
+        queryset = self.queryset.annotate(sentencias=Coalesce(Sum('indicadorescategoriaorg__cantidad', \
+            filter=(Q(indicadorescategoriaorg__indicador=8) | Q(indicadorescategoriaorg__indicador=9))),0)) 
         return queryset
     def retrieve(self, request, pk=None):
         queryset = self.queryset
