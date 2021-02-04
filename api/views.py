@@ -62,10 +62,11 @@ class CandidatoViewSet(viewsets.ModelViewSet):
     
     queryset = Candidato.objects \
                 .exclude(Q(jne_estado_lista='INADMISIBLE') | Q(jne_estado_lista='IMPROCEDENTE')) \
-                .exclude(Q(jne_estado_expediente='INADMISIBLE') | Q(jne_estado_expediente='IMPROCEDENTE')) \
+                .exclude(Q(jne_estado_expediente='INADMISIBLE') | Q(jne_estado_expediente='IMPROCEDENTE') | \
+                    Q(jne_estado_expediente='EXCLUSION') | Q(jne_estado_expediente='RETIRO') | \
+                    Q(jne_estado_expediente='RENUNCIA')) \
                 .order_by('distrito_electoral','jne_organizacion_politica','jne_posicion')
     serializer_class = CandidatoSerializer
-
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['documento_identidad','apellido_paterno','apellido_materno','nombres']
 
@@ -90,6 +91,6 @@ class CandidatoViewSet(viewsets.ModelViewSet):
     
     def retrieve(self, request, pk=None):
         queryset = self.queryset
-        candidato = get_object_or_404(queryset, pk=pk)
+        candidato = get_object_or_404(queryset, jne_idhojavida=pk)
         serializer = CandidatoDetailSerializer(candidato)
         return Response(serializer.data)
