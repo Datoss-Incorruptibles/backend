@@ -4,7 +4,7 @@ from .models import Proceso, Cargo, OrganizacionPolitica, \
 IndicadorCategoriaOrganizacion, IndicadorCategoria, Indicador, \
 IndicadorCategoriaCandidato, Ubigeo, Candidato, CandidatoEstudio, \
 CandidatoJudicial, CandidatoExperiencia, IndicadorCategoriaCandidato, \
-CandidatoIngreso, CandidatoInmueble, CandidatoMueble
+CandidatoIngreso, CandidatoInmueble, CandidatoMueble, CandidatoMedio
 
 class ProcesoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -116,6 +116,7 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
     ingresos = serializers.SerializerMethodField()
     inmuebles = serializers.SerializerMethodField()
     muebles = serializers.SerializerMethodField()
+    medios = serializers.SerializerMethodField()
 
     def get_sentencias(self, obj):
         candidato_sentencias = CandidatoJudicial.objects.filter(jne_idhojavida=obj.jne_idhojavida).order_by('tipo_proceso')
@@ -160,13 +161,20 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
         if not candidato_muebles:
             return None
         return CandidatoMuebleSerializer(candidato_muebles, many=True).data
-       
+    
+
+    def get_medios(self, obj):
+        candidato_medio = CandidatoMedio.objects.filter(jne_idhojavida=obj.jne_idhojavida).order_by('-fecha')
+        if not candidato_medio:
+            return None
+        return CandidatoMedioSerializer(candidato_medio, many=True).data
+    
     class Meta:
         model = Candidato
         fields = ('id', 'jne_idcandidato','jne_idhojavida','jne_estado_lista', 'jne_estado_expediente','jne_estado_hojavida','jne_posicion','jne_organizacion_politica','cargo_id',
                     'proceso_id','proceso_id','organizacion_politica_id','organizacion_politica_logo', 'documento_identidad','apellido_paterno','apellido_materno','nombres',
                     'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula','ruta_archivo','fecha_nacimiento','fecha_registro','fecha_modificacion',
-                    'indicadores_categoria_candidato','sentencias','estudios','experiencialaboral','experienciapolitica','ingresos','inmuebles','muebles')
+                    'indicadores_categoria_candidato','sentencias','estudios','experiencialaboral','experienciapolitica','ingresos','inmuebles','muebles','medios')
 
 
 
@@ -223,3 +231,10 @@ class CandidatoMuebleSerializer(serializers.Serializer):
     placa = serializers.CharField()
     valor = serializers.FloatField()
     vehiculo = serializers.CharField()
+
+
+class CandidatoMedioSerializer(serializers.Serializer):
+    url = serializers.URLField()
+    tipo = serializers.CharField()
+    fecha = serializers.DateTimeField()
+    medio = serializers.CharField()

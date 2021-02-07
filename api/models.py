@@ -272,3 +272,25 @@ class CandidatoMueble(models.Model):
 
     def __str__(self):
         return self.vehiculo
+
+
+
+class CandidatoMedio(models.Model):
+    TIPO_NOTICIA = [
+        ('video', 'Video'),
+        ('web', 'Web'),
+    ]
+    jne_idhojavida = models.IntegerField()
+    url = models.URLField(max_length=200)
+    tipo = models.CharField(max_length=10, choices=TIPO_NOTICIA, default='web')
+    fecha = models.DateTimeField()
+    medio = models.CharField(max_length=100)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+    class Meta:
+        db_table = 'candidato_medio'
+        verbose_name = "Candidato Medios"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.titulo
