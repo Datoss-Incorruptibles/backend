@@ -91,6 +91,9 @@ class CandidatoViewSet(viewsets.ModelViewSet):
     
     def retrieve(self, request, pk=None):
         queryset = self.queryset
-        candidato = get_object_or_404(queryset, jne_idhojavida=pk)
+        try:
+            candidato = queryset.filter(jne_idhojavida=pk)[0]
+        except queryset.DoesNotExist:
+            raise Http404("Not found")
         serializer = CandidatoDetailSerializer(candidato)
         return Response(serializer.data)
