@@ -234,6 +234,7 @@ class CandidatoMuebleSerializer(serializers.Serializer):
 
 
 class CandidatoMedioSerializer(serializers.Serializer):
+    titulo = serializers.CharField()
     url = serializers.URLField()
     tipo = serializers.CharField()
     fecha = serializers.DateTimeField()

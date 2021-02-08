@@ -281,7 +281,8 @@ class CandidatoMedio(models.Model):
         ('web', 'Web'),
     ]
     jne_idhojavida = models.IntegerField()
-    url = models.URLField(max_length=200)
+    titulo = models.CharField(max_length=250)    
+    url = models.URLField(max_length=250)
     tipo = models.CharField(max_length=10, choices=TIPO_NOTICIA, default='web')
     fecha = models.DateTimeField()
     medio = models.CharField(max_length=100)
