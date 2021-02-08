@@ -20,13 +20,12 @@ showmigrations-local:
 	make config-local
 	python manage.py showmigrations api
 
-
 config-dev:
-	DB_HOST=datosincorruptibles.c6gg6kroo2es.us-east-2.rds.amazonaws.com
-	DB_NAME=elecciones2021
-	DB_USER=roleA
-	DB_PASSWORD=B8HNzDwS1WEWjf
-	SECRET_KEY='e_(x5@3t65y996!ch$m*uf6y3j1a8zeh$h4=uiktp0c9oarkla'
+	export DB_HOST=datosincorruptibles.c6gg6kroo2es.us-east-2.rds.amazonaws.com
+	export DB_NAME=elecciones2021
+	export DB_USER=roleA
+	export DB_PASSWORD=B8HNzDwS1WEWjf
+	SECRET_KEY="e_(x5@3t65y996!ch$m*uf6y3j1a8zeh$h4=uiktp0c9oarkla"
 	DB_PORT=5432
 
 migrate-dev:
@@ -37,7 +36,6 @@ migrate-dev:
 showmigrations-dev:
 	make config-dev
 	python manage.py showmigrations api
-
 
 createsuperuser-dev:
 	make config-dev

@@ -284,7 +284,7 @@ class CandidatoMedio(models.Model):
     titulo = models.CharField(max_length=250)    
     url = models.URLField(max_length=250)
     tipo = models.CharField(max_length=10, choices=TIPO_NOTICIA, default='web')
-    fecha = models.DateTimeField()
+    fecha = models.DateField()
     medio = models.CharField(max_length=100)
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
     fecha_modificacion = models.DateTimeField(null=True)

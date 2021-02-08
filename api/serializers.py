@@ -237,5 +237,5 @@ class CandidatoMedioSerializer(serializers.Serializer):
     titulo = serializers.CharField()
     url = serializers.URLField()
     tipo = serializers.CharField()
-    fecha = serializers.DateTimeField()
+    fecha = serializers.DateField()
     medio = serializers.CharField()
