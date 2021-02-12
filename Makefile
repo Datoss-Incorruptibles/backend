@@ -1,42 +1,30 @@
-config-local:
-	DB_HOST=localhost
-	DB_NAME=elecciones
-	DB_USER=develop
-	DB_PASSWORD=develop
-	DB_PORT=5433
-	SECRET_KEY="e_(x5@3t65y996!ch$m*uf6y3j1a8zeh$h4=uiktp0c9oarkla"
-	DEBUG=True
+export DB_HOST=datosincorruptibles.c6gg6kroo2es.us-east-2.rds.amazonaws.com
+export DB_NAME=elecciones2021_prod
+export DB_USER=roleA
+export DB_PASSWORD=B8HNzDwS1WEWjf
+export SECRET_KEY="e_(x5@3t65y996!ch$m*uf6y3j1a8zeh$h4=uiktp0c9oarkla"
+export DB_PORT=5432
 
-run-local:
-	make config-local
+## LOCAL 
+#export DB_HOST=localhost
+#export DB_NAME=elecciones
+#export DB_USER=develop
+#export DB_PASSWORD=develop
+#export DB_PORT=5433
+#export SECRET_KEY="e_(x5@3t65y996!ch$m*uf6y3j1a8zeh$h4=uiktp0c9oarkla"
+#export DEBUG=True
+
+runserver:
 	python manage.py runserver
 
-migrate-local:
-	make config-local
-	python manage.py makemigrations
+migrate:
 	python manage.py migrate api $(params)
 
-showmigrations-local:
-	make config-local
+showmigrations:
 	python manage.py showmigrations api
 
-config-dev:
-	export DB_HOST=datosincorruptibles.c6gg6kroo2es.us-east-2.rds.amazonaws.com
-	export DB_NAME=elecciones2021
-	export DB_USER=roleA
-	export DB_PASSWORD=B8HNzDwS1WEWjf
-	SECRET_KEY="e_(x5@3t65y996!ch$m*uf6y3j1a8zeh$h4=uiktp0c9oarkla"
-	DB_PORT=5432
+makemigrations:
+	python manage.py makemigrations api
 
-migrate-dev:
-	make config-dev
-	python manage.py makemigrations
-	python manage.py migrate api $(params)
-
-showmigrations-dev:
-	make config-dev
-	python manage.py showmigrations api
-
-createsuperuser-dev:
-	make config-dev
+createsuperuser:
 	python manage.py createsuperuser

@@ -295,3 +295,69 @@ class CandidatoMedio(models.Model):
 
     def __str__(self):
         return self.titulo
+
+class PlanCriterio(models.Model):
+    nombre = models.CharField(max_length=100)
+    abreviatura = models.CharField(max_length=30)
+    peso = models.IntegerField(null=True)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+    class Meta:
+        db_table = 'plan_criterio'
+        verbose_name = "Plan criterio"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.nombre
+
+
+class OrganizacionPlan(models.Model):
+    jne_idplangobierno = models.IntegerField()
+    tipo_eleccion = models.IntegerField()
+    organizacion_politica = models.ForeignKey("OrganizacionPolitica", related_name='planes', on_delete=models.CASCADE)
+    ruta_archivo = models.CharField(max_length=250)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+    
+    class Meta:
+        db_table = 'organizacion_plan'
+        verbose_name = "Organizacion Plan"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.ruta_archivo
+
+class OrganizacionPlanDetalle(models.Model):
+    plan = models.ForeignKey("OrganizacionPlan", related_name='plan_detalles', on_delete=models.CASCADE)
+    jne_idplangobierno = models.IntegerField()
+    jne_idplangobdimension = models.IntegerField()
+    problema = models.CharField(max_length=300)
+    objetivo = models.CharField(max_length=300)
+    meta = models.CharField(max_length=300)
+    indicador = models.CharField(max_length=300)
+    dimension_id = models.IntegerField()
+    plan_criterio = models.ForeignKey("PlanCriterio", related_name='plan_detalles', on_delete=models.CASCADE)
+    valor = models.IntegerField(null=True)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+    class Meta:
+        db_table = 'organizacion_plan_detalle'
+        verbose_name = "Organizacion Plan detalle"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.problema
+
+class OrganizacionPlanCriterio(models.Model):
+    jne_idplangobierno = models.IntegerField()
+    plan_criterio_id = models.IntegerField()
+    puntaje = models.FloatField(null=True)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+    class Meta:
+        db_table = 'organizacion_plan_criterio'
+        verbose_name = "Organizacion Plan criterio"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.pk

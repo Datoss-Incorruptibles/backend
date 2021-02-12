@@ -4,7 +4,8 @@ from .models import Proceso, Cargo, OrganizacionPolitica, \
 IndicadorCategoriaOrganizacion, IndicadorCategoria, Indicador, \
 IndicadorCategoriaCandidato, Ubigeo, Candidato, CandidatoEstudio, \
 CandidatoJudicial, CandidatoExperiencia, IndicadorCategoriaCandidato, \
-CandidatoIngreso, CandidatoInmueble, CandidatoMueble, CandidatoMedio
+CandidatoIngreso, CandidatoInmueble, CandidatoMueble, CandidatoMedio, \
+OrganizacionPlan, OrganizacionPlanDetalle 
 
 class ProcesoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -74,7 +75,32 @@ class OrganizacionPoliticaSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrganizacionPolitica
         fields = ('id','nombre','fundacion_fecha', 'estado','descripcion','ruta_archivo',
-                    'jne_idorganizacionpolitica','indicadorescategoriaorg','sentencias')
+                'jne_idorganizacionpolitica','indicadorescategoriaorg','sentencias')
+
+class OrganizacionPoliticaDetalleSerializer(serializers.ModelSerializer):
+    indicadorescategoriaorg = IndicadorCategoriaOrganizacionSerializer(many=True, read_only=True)
+    plangobierno = serializers.SerializerMethodField()
+
+    def get_plangobierno(self, obj):
+        plan = OrganizacionPlan.objects.get(organizacion_politica_id=obj.pk, tipo_eleccion=1)
+        plan_detalle = OrganizacionPlanDetalle.objects.filter(plan_id=plan.pk).order_by('dimension_id')
+        if not plan_detalle:
+            return None
+        return PlanGobiernoSerializer(plan_detalle, many=True).data
+
+    class Meta:
+        model = OrganizacionPolitica
+        fields = ('id','nombre','fundacion_fecha', 'estado','descripcion','ruta_archivo',
+                'jne_idorganizacionpolitica','indicadorescategoriaorg','plangobierno')
+
+class PlanGobiernoSerializer(serializers.Serializer):
+    problema = serializers.CharField()
+    objetivo = serializers.CharField()
+    meta = serializers.CharField()
+    indicador = serializers.CharField()
+    dimension_id = serializers.IntegerField()
+    criterio_id = serializers.IntegerField(source="plan_criterio_id")
+    criterio = serializers.CharField(source="plan_criterio.nombre")
 
 
 class CandidatoSerializer(serializers.ModelSerializer):
@@ -113,6 +139,7 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
     sentencias = serializers.SerializerMethodField()
     experiencialaboral = serializers.SerializerMethodField()
     experienciapolitica = serializers.SerializerMethodField()
+    experienciapartido = serializers.SerializerMethodField()
     ingresos = serializers.SerializerMethodField()
     inmuebles = serializers.SerializerMethodField()
     muebles = serializers.SerializerMethodField()
@@ -134,13 +161,19 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
         candidato_exp_laboral = CandidatoExperiencia.objects.filter(jne_idhojavida=obj.jne_idhojavida, tipo=1).order_by('-anio_trabajo_desde')
         if not candidato_exp_laboral:
             return None
-        return CandidatoExperiencialSerializer(candidato_exp_laboral, many=True).data
+        return CandidatoExperienciaSerializer(candidato_exp_laboral, many=True).data
 
     def get_experienciapolitica(self, obj):
         candidato_exp_politica = CandidatoExperiencia.objects.filter(jne_idhojavida=obj.jne_idhojavida, tipo=3).order_by('-anio_trabajo_desde')
         if not candidato_exp_politica:
             return None
-        return CandidatoExperiencialSerializer(candidato_exp_politica, many=True).data
+        return CandidatoExperienciaSerializer(candidato_exp_politica, many=True).data
+
+    def get_experienciapartido(self, obj):
+        candidato_exp_partido = CandidatoExperiencia.objects.filter(jne_idhojavida=obj.jne_idhojavida, tipo=2).order_by('-anio_trabajo_desde')
+        if not candidato_exp_partido:
+            return None
+        return CandidatoExperienciaSerializer(candidato_exp_partido, many=True).data
 
     def get_ingresos(self, obj):
         candidato_ingresos = CandidatoIngreso.objects.filter(jne_idhojavida=obj.jne_idhojavida)
@@ -171,12 +204,14 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Candidato
-        fields = ('id', 'jne_idcandidato','jne_idhojavida','jne_estado_lista', 'jne_estado_expediente','jne_estado_hojavida','jne_posicion','jne_organizacion_politica','cargo_id',
-                    'proceso_id','proceso_id','organizacion_politica_id','organizacion_politica_logo', 'documento_identidad','apellido_paterno','apellido_materno','nombres',
-                    'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula','ruta_archivo','fecha_nacimiento','fecha_registro','fecha_modificacion',
-                    'indicadores_categoria_candidato','sentencias','estudios','experiencialaboral','experienciapolitica','ingresos','inmuebles','muebles','medios')
-
-
+        fields = ('id', 'jne_idcandidato','jne_idhojavida','jne_estado_lista', 'jne_estado_expediente',
+                'jne_estado_hojavida','jne_posicion','jne_organizacion_politica','cargo_id',
+                'proceso_id','proceso_id','organizacion_politica_id','organizacion_politica_logo',
+                'documento_identidad','apellido_paterno','apellido_materno','nombres',
+                'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula',
+                'ruta_archivo','fecha_nacimiento','fecha_registro','fecha_modificacion',
+                'indicadores_categoria_candidato','sentencias','estudios','experiencialaboral',
+                'experienciapolitica','experienciapartido','ingresos','inmuebles','muebles','medios')
 
 
 class CandidatoEstudioSerializer(serializers.Serializer):
@@ -196,7 +231,7 @@ class CandidatoJudicialSerializer(serializers.Serializer):
     tipo_proceso = serializers.CharField()
 
 
-class CandidatoExperiencialSerializer(serializers.Serializer):
+class CandidatoExperienciaSerializer(serializers.Serializer):
     centro_trabajo = serializers.CharField()
     ocupacion_profesion = serializers.CharField()
     anio_trabajo_desde = serializers.CharField()
