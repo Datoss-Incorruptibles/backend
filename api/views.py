@@ -9,7 +9,7 @@ from .serializers import ProcesoSerializer, CargoSerializer , \
     OrganizacionPoliticaSerializer , CandidatoSerializer, \
     UbigeoSerializer, OrgPolComboSerializer , \
     IndicadorCategoriaSerializer, IndicadorCategoriaOrganizacionSerializer, \
-    CandidatoDetailSerializer
+    CandidatoDetailSerializer, OrganizacionPoliticaDetalleSerializer
 from .models import Proceso, Cargo , OrganizacionPolitica , Candidato, Ubigeo, \
 IndicadorCategoria, IndicadorCategoriaOrganizacion
 
@@ -47,7 +47,6 @@ class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
     ordering_fields = ['nombre', 'fundacion_fecha','sentencias']
     ordering = ['nombre']
 
-
     def get_queryset(self):
         queryset = self.queryset.annotate(sentencias=Coalesce(Sum('indicadorescategoriaorg__cantidad', \
             filter=(Q(indicadorescategoriaorg__indicador=8) | Q(indicadorescategoriaorg__indicador=9))),0)) 
@@ -55,7 +54,7 @@ class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, pk=None):
         queryset = self.queryset
         org = get_object_or_404(queryset, pk=pk)
-        serializer = OrganizacionPoliticaSerializer(org)
+        serializer = OrganizacionPoliticaDetalleSerializer(org)
         return Response(serializer.data)
 
 class CandidatoViewSet(viewsets.ModelViewSet):
