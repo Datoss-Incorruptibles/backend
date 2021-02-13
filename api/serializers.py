@@ -274,3 +274,20 @@ class CandidatoMedioSerializer(serializers.Serializer):
     tipo = serializers.CharField()
     fecha = serializers.DateField()
     medio = serializers.CharField()
+    imagen = serializers.CharField()
+
+
+
+class OrganizacionPlanDetalleSerializer(serializers.ModelSerializer):
+    criterio_id = serializers.IntegerField(source="plan_criterio_id")
+    criterio = serializers.CharField(source="plan_criterio.nombre")
+    class Meta:
+        model = OrganizacionPlanDetalle
+        fields = ('problema', 'objetivo','meta','indicador','dimension_id','criterio_id','criterio')
+
+class OrganizacionPlanSerializer(serializers.ModelSerializer):
+    plan_detalles = OrganizacionPlanDetalleSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = OrganizacionPlan
+        fields = ('tipo_plan','plan_detalles')

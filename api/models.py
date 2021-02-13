@@ -287,6 +287,7 @@ class CandidatoMedio(models.Model):
     fecha = models.DateField()
     medio = models.CharField(max_length=100)
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    imagen = models.CharField(max_length=250, null=True, blank=True)
     fecha_modificacion = models.DateTimeField(null=True)
     class Meta:
         db_table = 'candidato_medio'
@@ -311,7 +312,7 @@ class PlanCriterio(models.Model):
         return self.nombre
 
 
-class OrganizacionPlan(models.Model):
+class OrganizacionPlan(models.Model):    
     jne_idplangobierno = models.IntegerField()
     tipo_eleccion = models.IntegerField()
     organizacion_politica = models.ForeignKey("OrganizacionPolitica", related_name='planes', on_delete=models.CASCADE)
@@ -326,6 +327,12 @@ class OrganizacionPlan(models.Model):
 
     def __str__(self):
         return self.ruta_archivo
+
+    @property
+    def tipo_plan(self):
+        TIPO_PLAN = {1: 'Plan presidencial', 3: 'Plan parlamento andino'}
+        return TIPO_PLAN[self.tipo_eleccion]
+
 
 class OrganizacionPlanDetalle(models.Model):
     plan = models.ForeignKey("OrganizacionPlan", related_name='plan_detalles', on_delete=models.CASCADE)
