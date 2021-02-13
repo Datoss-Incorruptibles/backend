@@ -13,5 +13,6 @@ router.register(r'orgpolcombo', views.OrgPolComboViewSet,basename='orgpolcombo')
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path('', include(router.urls))
+    path('plan/<int:organizacion_politica_id>/<int:tipo_eleccion>/', views.OrganizacionPlanViewSet.as_view(), name='planes'),
+    path('', include(router.urls)),
 ]

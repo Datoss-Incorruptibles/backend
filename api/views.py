@@ -4,14 +4,30 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets,views, generics, mixins, filters
 from rest_framework.response import Response
-
 from .serializers import ProcesoSerializer, CargoSerializer , \
     OrganizacionPoliticaSerializer , CandidatoSerializer, \
     UbigeoSerializer, OrgPolComboSerializer , \
     IndicadorCategoriaSerializer, IndicadorCategoriaOrganizacionSerializer, \
-    CandidatoDetailSerializer, OrganizacionPoliticaDetalleSerializer
+    CandidatoDetailSerializer, OrganizacionPoliticaDetalleSerializer, \
+    OrganizacionPlanSerializer
 from .models import Proceso, Cargo , OrganizacionPolitica , Candidato, Ubigeo, \
-IndicadorCategoria, IndicadorCategoriaOrganizacion
+IndicadorCategoria, IndicadorCategoriaOrganizacion, OrganizacionPlan
+
+class MultipleFieldLookupMixin:
+    """
+    Apply this mixin to any view or viewset to get multiple field filtering
+    based on a `lookup_fields` attribute, instead of the default single field filtering.
+    """
+    def get_object(self):
+        queryset = self.get_queryset()             # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        filter = {}
+        for field in self.lookup_fields:
+            if self.kwargs[field]: # Ignore empty fields.
+                filter[field] = self.kwargs[field]
+        obj = get_object_or_404(queryset, **filter)  # Lookup the object
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 
 class ProcesoViewSet(viewsets.ModelViewSet):
@@ -96,3 +112,10 @@ class CandidatoViewSet(viewsets.ModelViewSet):
             raise Http404("Not found")
         serializer = CandidatoDetailSerializer(candidato)
         return Response(serializer.data)
+
+
+class OrganizacionPlanViewSet(MultipleFieldLookupMixin, generics.RetrieveAPIView):
+    queryset = OrganizacionPlan.objects.all()
+    serializer_class = OrganizacionPlanSerializer
+    lookup_fields = ['organizacion_politica_id', 'tipo_eleccion']
+
