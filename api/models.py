@@ -368,3 +368,69 @@ class OrganizacionPlanCriterio(models.Model):
 
     def __str__(self):
         return self.pk
+
+
+
+
+
+class CandidatoProyectoLey(models.Model):
+    jne_idhojavida = models.IntegerField()
+    ley_id = models.CharField(max_length=150)
+
+    class Meta:
+        db_table = 'candidato_proyecto_ley'
+        verbose_name = "Candidatos proyectos de ley"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.pk
+
+class ProyectoLey(models.Model):
+    ley_id = models.CharField(max_length=150, primary_key=True)
+    periodo = models.CharField(max_length = 150)
+    legislatura = models.CharField(max_length = 150)
+    fecha_presentacion = models.DateField(null=True)
+    numero = models.CharField(max_length = 150)
+    proponente = models.CharField(max_length = 150)
+    grupo_parlamentario = models.CharField(max_length = 150)
+    titulo = models.CharField(max_length = 255)
+    sumilla = models.CharField(max_length = 255, null=True)
+    autores = models.CharField(max_length = 255, null=True)
+    adherentes = models.CharField(max_length = 150, null=True)
+    seguimiento = models.CharField(max_length = 150, null=True)
+    iniciativa_agrupadas = models.CharField(max_length = 150, null=True)
+    numero_simple = models.CharField(max_length = 150, null=True)
+    fecha_ultima = models.DateField(null=True)
+    estado = models.CharField(max_length = 150)
+    link_detalle = models.CharField(max_length = 255, null=True)
+    periodo_inicio = models.CharField(max_length = 150)
+    periodo_fin = models.CharField(max_length = 150)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+
+    class Meta:
+        db_table = 'proyecto_ley'
+        verbose_name = "Proyecto de ley"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.ley_id
+
+class CandidatoProductividad(models.Model):
+
+    jne_idhojavida = models.IntegerField()
+    periodo_inicio = models.IntegerField()
+    periodo_fin = models.IntegerField()
+    nro_leyes_publicado = models.IntegerField()
+    nro_leyes_total = models.IntegerField()
+    porcentaje_leyes = models.FloatField()
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+
+    class Meta:
+        db_table = 'candidato_productividad'
+        verbose_name = "Candidato productividad"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.pk
