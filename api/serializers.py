@@ -79,28 +79,13 @@ class OrganizacionPoliticaSerializer(serializers.ModelSerializer):
 
 class OrganizacionPoliticaDetalleSerializer(serializers.ModelSerializer):
     indicadorescategoriaorg = IndicadorCategoriaOrganizacionSerializer(many=True, read_only=True)
-    plangobierno = serializers.SerializerMethodField()
-
-    def get_plangobierno(self, obj):
-        plan = OrganizacionPlan.objects.get(organizacion_politica_id=obj.pk, tipo_eleccion=1)
-        plan_detalle = OrganizacionPlanDetalle.objects.filter(plan_id=plan.pk).order_by('dimension_id')
-        if not plan_detalle:
-            return None
-        return PlanGobiernoSerializer(plan_detalle, many=True).data
 
     class Meta:
         model = OrganizacionPolitica
         fields = ('id','nombre','fundacion_fecha', 'estado','descripcion','ruta_archivo',
-                'jne_idorganizacionpolitica','indicadorescategoriaorg','plangobierno')
+                'jne_idorganizacionpolitica','indicadorescategoriaorg')
 
-class PlanGobiernoSerializer(serializers.Serializer):
-    problema = serializers.CharField()
-    objetivo = serializers.CharField()
-    meta = serializers.CharField()
-    indicador = serializers.CharField()
-    dimension_id = serializers.IntegerField()
-    criterio_id = serializers.IntegerField(source="plan_criterio_id")
-    criterio = serializers.CharField(source="plan_criterio.nombre")
+
 
 
 class CandidatoSerializer(serializers.ModelSerializer):
