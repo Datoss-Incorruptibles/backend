@@ -129,6 +129,7 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
     inmuebles = serializers.SerializerMethodField()
     muebles = serializers.SerializerMethodField()
     medios = serializers.SerializerMethodField()
+    postula = serializers.SerializerMethodField()
 
     def get_sentencias(self, obj):
         candidato_sentencias = CandidatoJudicial.objects.filter(jne_idhojavida=obj.jne_idhojavida).order_by('tipo_proceso')
@@ -137,7 +138,7 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
         return CandidatoJudicialSerializer(candidato_sentencias, many=True).data
 
     def get_estudios(self, obj):
-        candidato_estudios = CandidatoEstudio.objects.filter(jne_idhojavida=obj.jne_idhojavida).order_by('-nivel_estudio_id')
+        candidato_estudios = CandidatoEstudio.objects.filter(jne_idhojavida=obj.jne_idhojavida).order_by('-nivel_estudio_id','jne_idhvestudio')
         if not candidato_estudios:
             return None
         return CandidatoEstudioSerializer(candidato_estudios, many=True).data
@@ -186,6 +187,12 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
         if not candidato_medio:
             return None
         return CandidatoMedioSerializer(candidato_medio, many=True).data
+
+    def get_postula(self, obj):
+        candidatos = Candidato.objects.filter(jne_idhojavida=obj.jne_idhojavida)
+        if not candidatos:
+            return None
+        return CandidatoPostulacionSerializer(candidatos, many=True).data
     
     class Meta:
         model = Candidato
@@ -196,7 +203,7 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
                 'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula',
                 'ruta_archivo','fecha_nacimiento','fecha_registro','fecha_modificacion',
                 'indicadores_categoria_candidato','sentencias','estudios','experiencialaboral',
-                'experienciapolitica','experienciapartido','ingresos','inmuebles','muebles','medios')
+                'experienciapolitica','experienciapartido','ingresos','inmuebles','muebles','medios','postula')
 
 
 class CandidatoEstudioSerializer(serializers.Serializer):
@@ -261,6 +268,8 @@ class CandidatoMedioSerializer(serializers.Serializer):
     medio = serializers.CharField()
     imagen = serializers.CharField()
 
+class CandidatoPostulacionSerializer(serializers.Serializer):
+    cargo_id = serializers.IntegerField()
 
 
 class OrganizacionPlanDetalleSerializer(serializers.ModelSerializer):

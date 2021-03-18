@@ -19,3 +19,6 @@ makemigrations:
 
 createsuperuser:
 	python manage.py createsuperuser
+
+statics:
+	python manage.py collectstatic

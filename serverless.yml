@@ -3,7 +3,7 @@ provider:
   name: aws
   runtime: python3.8
   stage: dev
-  region: us-east-2
+  profile: ${opt:stage, 'dev'}
   stackName: elecciones2021-stack-${opt:stage, self:provider.stage, 'dev'} 
   apiName: elecciones2021-apigtw-${opt:stage, self:provider.stage, 'dev'}
 
