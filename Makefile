@@ -22,3 +22,10 @@ createsuperuser:
 
 statics:
 	python manage.py collectstatic
+
+
+deploy-dev:
+	sls deploy --region us-east-2
+
+deploy-prod:
+	sls deploy --stage prod --region us-west-2
