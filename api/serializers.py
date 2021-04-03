@@ -5,7 +5,7 @@ IndicadorCategoriaOrganizacion, IndicadorCategoria, Indicador, \
 IndicadorCategoriaCandidato, Ubigeo, Candidato, CandidatoEstudio, \
 CandidatoJudicial, CandidatoExperiencia, IndicadorCategoriaCandidato, \
 CandidatoIngreso, CandidatoInmueble, CandidatoMueble, CandidatoMedio, \
-OrganizacionPlan, OrganizacionPlanDetalle 
+OrganizacionPlan, OrganizacionPlanDetalle, CandidatoInfoAdicional
 
 class ProcesoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -141,6 +141,7 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
     muebles = serializers.SerializerMethodField()
     medios = serializers.SerializerMethodField()
     postula = serializers.SerializerMethodField()
+    info_adicional = serializers.SerializerMethodField()
 
     def get_sentencias(self, obj):
         candidato_sentencias = CandidatoJudicial.objects.filter(jne_idhojavida=obj.jne_idhojavida).order_by('tipo_proceso')
@@ -205,6 +206,13 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
             return None
         return CandidatoPostulacionSerializer(candidatos, many=True).data
     
+
+    def get_info_adicional(self, obj):
+        candidato_info = CandidatoInfoAdicional.objects.filter(jne_idhojavida=obj.jne_idhojavida)
+        if not candidato_info:
+            return None
+        return CandidatoInfoAdicionalSerializer(candidato_info, many=True).data
+    
     class Meta:
         model = Candidato
         fields = ('id', 'jne_idcandidato','jne_idhojavida','jne_estado_lista', 'jne_estado_expediente',
@@ -214,7 +222,8 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
                 'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula',
                 'ruta_archivo','fecha_nacimiento','fecha_registro','fecha_modificacion',
                 'indicadores_categoria_candidato','sentencias','estudios','experiencialaboral',
-                'experienciapolitica','experienciapartido','ingresos','inmuebles','muebles','medios','postula')
+                'experienciapolitica','experienciapartido','ingresos','inmuebles','muebles','medios',
+                'postula', 'info_adicional')
 
 
 class CandidatoEstudioSerializer(serializers.Serializer):
@@ -296,3 +305,6 @@ class OrganizacionPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrganizacionPlan
         fields = ('tipo_plan','plan_detalles')
+
+class CandidatoInfoAdicionalSerializer(serializers.Serializer):
+    info = serializers.CharField(source='info_adicional')

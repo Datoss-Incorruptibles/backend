@@ -4,11 +4,12 @@ ifneq (,$(wildcard ./.env))
     export
 endif
 
+
+
 runserver:
 	python manage.py runserver
 
 migrate:
-	echo $(DB_NAME)
 	python manage.py migrate api $(params)
 
 showmigrations:
@@ -25,7 +26,8 @@ statics:
 
 
 deploy-dev:
-	sls deploy --region us-east-2
+	rm .env
+	sls deploy --stage dev --region us-east-2
 
 deploy-prod:
 	sls deploy --stage prod --region us-west-2

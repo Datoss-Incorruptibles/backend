@@ -369,10 +369,6 @@ class OrganizacionPlanCriterio(models.Model):
     def __str__(self):
         return self.pk
 
-
-
-
-
 class CandidatoProyectoLey(models.Model):
     jne_idhojavida = models.IntegerField()
     ley_id = models.CharField(max_length=150)
@@ -430,6 +426,23 @@ class CandidatoProductividad(models.Model):
     class Meta:
         db_table = 'candidato_productividad'
         verbose_name = "Candidato productividad"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.pk
+
+
+class CandidatoInfoAdicional(models.Model):
+
+    jne_idhojavida = models.IntegerField()
+    jne_idhvinfoadicional = models.IntegerField()
+    info_adicional = models.CharField(max_length=1500)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+
+    class Meta:
+        db_table = 'candidato_info_adicional'
+        verbose_name = "Candidato info adicional"
         verbose_name_plural = verbose_name
 
     def __str__(self):
