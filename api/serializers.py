@@ -5,7 +5,8 @@ IndicadorCategoriaOrganizacion, IndicadorCategoria, Indicador, \
 IndicadorCategoriaCandidato, Ubigeo, Candidato, CandidatoEstudio, \
 CandidatoJudicial, CandidatoExperiencia, IndicadorCategoriaCandidato, \
 CandidatoIngreso, CandidatoInmueble, CandidatoMueble, CandidatoMedio, \
-OrganizacionPlan, OrganizacionPlanDetalle, CandidatoInfoAdicional
+OrganizacionPlan, OrganizacionPlanDetalle, CandidatoInfoAdicional, \
+CandidatoAnotacionMarginal
 
 class ProcesoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -142,6 +143,7 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
     medios = serializers.SerializerMethodField()
     postula = serializers.SerializerMethodField()
     info_adicional = serializers.SerializerMethodField()
+    anotacion = serializers.SerializerMethodField()
 
     def get_sentencias(self, obj):
         candidato_sentencias = CandidatoJudicial.objects.filter(jne_idhojavida=obj.jne_idhojavida).order_by('tipo_proceso')
@@ -212,6 +214,12 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
         if not candidato_info:
             return None
         return CandidatoInfoAdicionalSerializer(candidato_info, many=True).data
+
+    def get_anotacion(self, obj):
+        candidato_anotacion = CandidatoAnotacionMarginal.objects.filter(jne_idhojavida=obj.jne_idhojavida)
+        if not candidato_anotacion:
+            return None
+        return CandidatoAnotacionMarginalSerializer(candidato_anotacion, many=True).data
     
     class Meta:
         model = Candidato
@@ -223,7 +231,7 @@ class CandidatoDetailSerializer(serializers.ModelSerializer):
                 'ruta_archivo','fecha_nacimiento','fecha_registro','fecha_modificacion',
                 'indicadores_categoria_candidato','sentencias','estudios','experiencialaboral',
                 'experienciapolitica','experienciapartido','ingresos','inmuebles','muebles','medios',
-                'postula', 'info_adicional')
+                'postula', 'info_adicional','anotacion')
 
 
 class CandidatoEstudioSerializer(serializers.Serializer):
@@ -308,3 +316,8 @@ class OrganizacionPlanSerializer(serializers.ModelSerializer):
 
 class CandidatoInfoAdicionalSerializer(serializers.Serializer):
     info = serializers.CharField(source='info_adicional')
+
+class CandidatoAnotacionMarginalSerializer(serializers.Serializer):
+    dice = serializers.CharField()
+    debedecir = serializers.CharField()
+    tipo = serializers.CharField(source="jne_strtipoanotacion")

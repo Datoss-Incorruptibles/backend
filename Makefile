@@ -26,7 +26,6 @@ statics:
 
 
 deploy-dev:
-	rm .env
 	sls deploy --stage dev --region us-east-2
 
 deploy-prod:

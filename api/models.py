@@ -447,3 +447,22 @@ class CandidatoInfoAdicional(models.Model):
 
     def __str__(self):
         return self.pk
+
+
+class CandidatoAnotacionMarginal(models.Model):
+
+    jne_idhojavida = models.IntegerField()
+    jne_idanotacionmarginal = models.IntegerField()
+    jne_idtipoanotacion = models.IntegerField()
+    jne_strtipoanotacion = models.CharField(max_length=150)
+    dice = models.CharField(max_length=4000)
+    debedecir = models.CharField(max_length=4000)
+    fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True)
+    class Meta:
+        db_table = 'candidato_anotacion_marginal'
+        verbose_name = "Candidato anotacion marginal"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.pk
