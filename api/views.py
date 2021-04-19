@@ -59,7 +59,8 @@ class OrganizacionPoliticaViewSet(viewsets.ModelViewSet):
     queryset = OrganizacionPolitica.objects.filter(estado=1)
     serializer_class = OrganizacionPoliticaSerializer
 
-    filter_backends = [filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ['electo']
     ordering_fields = ['nombre', 'fundacion_fecha','sentencias']
     ordering = ['nombre']
 
@@ -85,7 +86,7 @@ class CandidatoViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['documento_identidad','apellido_paterno','apellido_materno','nombres']
 
-    filterset_fields = ['organizacion_politica_id','region','ubigeo_postula']
+    filterset_fields = ['organizacion_politica_id','region','ubigeo_postula','electo']
 
     def get_queryset(self):
         queryset = self.queryset
@@ -118,4 +119,29 @@ class OrganizacionPlanViewSet(MultipleFieldLookupMixin, generics.RetrieveAPIView
     queryset = OrganizacionPlan.objects.all()
     serializer_class = OrganizacionPlanSerializer
     lookup_fields = ['organizacion_politica_id', 'tipo_eleccion']
+
+
+
+
+
+class Candidato2daVueltaViewSet(generics.ListAPIView):
+    
+    queryset = Candidato.objects.filter(jne_idhojavida__in=(133878,137792))
+    serializer_class = CandidatoSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        cargo_ids = self.request.query_params.get('cargo_ids', [])
+        if cargo_ids:
+            queryset = queryset.filter(cargo_id__in=cargo_ids.split(","))
+        indicadores = self.request.query_params.get('indicador_ids', [])
+        if indicadores:
+            queryset = queryset.annotate(indicadores=Count('indicadores_categoria_candidato', \
+                filter=(Q(indicadores_categoria_candidato__indicador__in=indicadores.split(","))))) \
+                .filter(indicadores__gt=0)
+    
+        max_estudios = self.request.query_params.get('max_estudios_ids', [])
+        if max_estudios:
+            queryset = queryset.filter(nivel_estudio_id_max__in=max_estudios.split(","))
+        return queryset
 

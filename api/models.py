@@ -35,6 +35,7 @@ class OrganizacionPolitica(models.Model):
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
     url = models.CharField(max_length=150)
     fecha_modificacion = models.DateTimeField(null=True)
+    electo = models.BooleanField(default=False)
 
     class Meta:
         db_table = "organizacion_politica"
@@ -128,6 +129,8 @@ class Candidato(models.Model):
     ruta_archivo =  models.CharField(max_length=150, null=True)
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
     fecha_modificacion = models.DateTimeField(null=True)
+    electo = models.BooleanField(default=False)
+
     class Meta:
         db_table = "candidato"
 

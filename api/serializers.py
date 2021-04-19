@@ -76,7 +76,7 @@ class OrganizacionPoliticaSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrganizacionPolitica
         fields = ('id','nombre','fundacion_fecha', 'estado','descripcion','ruta_archivo',
-                'jne_idorganizacionpolitica','indicadorescategoriaorg','sentencias')
+                'jne_idorganizacionpolitica','indicadorescategoriaorg','sentencias','electo')
 
 class OrganizacionPoliticaDetalleSerializer(serializers.ModelSerializer):
     indicadorescategoriaorg = IndicadorCategoriaOrganizacionSerializer(many=True, read_only=True)
@@ -115,7 +115,7 @@ class CandidatoSerializer(serializers.ModelSerializer):
         model = Candidato
         fields = ('id', 'jne_idcandidato','jne_idhojavida','jne_estado_lista', 'jne_estado_expediente','jne_estado_hojavida','jne_posicion','jne_organizacion_politica','cargo_id',
         'proceso_id','proceso_id','organizacion_politica_id','organizacion_politica_logo', 'documento_identidad','apellido_paterno','apellido_materno','nombres',
-        'profesion','nivel_estudio_id_max','region', 'distrito_electoral','ubigeo_postula','ruta_archivo','fecha_registro','fecha_modificacion','indicadores')
+        'profesion','nivel_estudio_id_max','ruta_archivo','fecha_registro','indicadores','electo')
 
 
 class IndicadoresCandidatoSerializer(serializers.Serializer):
