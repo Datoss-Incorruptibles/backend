@@ -127,10 +127,11 @@ class Candidato(models.Model):
     distrito_electoral =  models.CharField(max_length=150, null=True)
     ubigeo_postula =  models.CharField(max_length=150, null=True)
     ruta_archivo =  models.CharField(max_length=150, null=True)
+    electo = models.BooleanField(default=False)
+    votos_validos = models.BigIntegerField(default=0)
     fecha_registro = models.DateTimeField(default=datetime.now, blank=True)
     fecha_modificacion = models.DateTimeField(null=True)
-    electo = models.BooleanField(default=False)
-
+    
     class Meta:
         db_table = "candidato"
 

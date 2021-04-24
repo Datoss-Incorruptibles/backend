@@ -115,7 +115,7 @@ class CandidatoSerializer(serializers.ModelSerializer):
         model = Candidato
         fields = ('id', 'jne_idcandidato','jne_idhojavida','jne_estado_lista', 'jne_estado_expediente','jne_estado_hojavida','jne_posicion','jne_organizacion_politica','cargo_id',
         'proceso_id','proceso_id','organizacion_politica_id','organizacion_politica_logo', 'documento_identidad','apellido_paterno','apellido_materno','nombres',
-        'profesion','nivel_estudio_id_max','ruta_archivo','fecha_registro','indicadores','electo')
+        'profesion','nivel_estudio_id_max','ruta_archivo','fecha_registro','indicadores','electo','votos_validos')
 
 
 class IndicadoresCandidatoSerializer(serializers.Serializer):
